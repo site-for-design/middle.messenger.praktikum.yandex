@@ -6,4 +6,5 @@ export default defineConfig({
     sourcemap: false,
     outDir: '../dist'
   },
+  publicDir: 'assets'
 })

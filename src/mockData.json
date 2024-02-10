@@ -47,7 +47,7 @@
    },
    {
     "userId": "1",
-    "message": "<img src=\"/assets/img/photo.png\" alt=\"\">",
+    "message": "<img src=\"/img/photo.png\" alt=\"\">",
     "date": "2024-02-07T18:47:05.060Z",
     "checked": true
    },
