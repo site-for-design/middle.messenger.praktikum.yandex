@@ -3,3 +3,4 @@ export default (elems, type, callback) => {
         elem.addEventListener(type, callback)
     });
 };
+// Useful comment
