@@ -8,11 +8,11 @@ https://github.com/site-for-design/middle.messenger.praktikum.yandex
 
 ## Страницы
 
-- [Login Page](https://65c763d91188995f8d8b13af--beamish-dolphin-60ab4f.netlify.app),
-- [Registration Page](https://65c763d91188995f8d8b13af--beamish-dolphin-60ab4f.netlify.app/registration),
-- [Chat Page](https://65c763d91188995f8d8b13af--beamish-dolphin-60ab4f.netlify.app/chat),
-- [404 Page](https://65c763d91188995f8d8b13af--beamish-dolphin-60ab4f.netlify.app/smth),
-- [500 Page](https://65c763d91188995f8d8b13af--beamish-dolphin-60ab4f.netlify.app/500),
+- [Login Page](https://yaproject2.netlify.app),
+- [Registration Page](https://yaproject2.netlify.app/registration),
+- [Chat Page](https://yaproject2.netlify.app/chat),
+- [404 Page](https://yaproject2.netlify.app/smth),
+- [500 Page](https://yaproject2.netlify.app/500),
 
 Account секция сверстана в Chat Page как модальное окно, чтобы открыть - нажмите на профиль в сайдбаре слева.
 

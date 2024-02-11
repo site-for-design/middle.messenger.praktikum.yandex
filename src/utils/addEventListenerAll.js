@@ -1,6 +1,5 @@
-const addEventListenerAll = (elems, type, callback) => {
+export default (elems, type, callback) => {
     elems.forEach(elem => {
         elem.addEventListener(type, callback)
     });
-}
-export default addEventListenerAll;
+};
