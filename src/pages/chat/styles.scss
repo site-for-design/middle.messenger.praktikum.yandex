@@ -19,7 +19,7 @@ section#chat {
     font-size: 12px;
     color: $lightTextColor;
     &:after {
-     content: url(../img/ar-right.svg);
+     content: url(../../assets/img/ar-right.svg);
      display: inline-block;
      margin-left: 8px;
     }
@@ -46,7 +46,7 @@ section#chat {
      display: flex;
      align-items: center;
      &:before {
-      content: url(../img/search.svg);
+      content: url(../../assets/img/search.svg);
       height: 20px;
      }
     }
@@ -78,7 +78,7 @@ section#chat {
       border-radius: 50%;
       margin-right: 10px;
       &.no-image {
-       background-image: url(../img/noImage.svg);
+       background-image: url(../../assets/img/noImage.svg);
        background-size: contain;
       }
      }
@@ -187,7 +187,7 @@ section#chat {
       border-radius: 50%;
       margin-right: 10px;
       &.no-image {
-       background-image: url(../img/noImage.svg);
+       background-image: url(../../assets/img/noImage.svg);
        background-size: contain;
       }
      }
@@ -252,7 +252,7 @@ section#chat {
       }
       &.checked {
        .time:before {
-        content: url(../img/checked.svg);
+        content: url(../../assets/img/checked.svg);
         margin-right: 4px;
        }
       }
@@ -324,7 +324,7 @@ section#chat {
      margin-top: 2px;
      width: 28px;
      height: 28px;
-     background-image: url(../img/ar-circle.svg);
+     background-image: url(../../assets/img/ar-circle.svg);
      background-size: contain;
      background-repeat: no-repeat;
      transform: rotate(180deg);
