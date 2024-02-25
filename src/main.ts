@@ -1,16 +1,16 @@
 import mockData from "./mockData.json";
 import Block from "./services/Block";
+import Button from "./components/Button";
+import Form from "./components/Form";
+import Input from "./components/Input";
+import MessagePreview from "./components/MessagePreview";
+import Message from "./components/Message";
 import LoginPage from "./pages/login";
 import RegistrationPage from "./pages/registration";
 import ChatPage from "./pages/chat";
 import Account from "./pages/account";
 import ErrorPage from "./pages/error";
 import "./assets/scss/styles.scss";
-import Button from "./components/Button";
-import Form from "./components/Form";
-import Input from "./components/Input";
-import MessagePreview from "./components/MessagePreview";
-import Message from "./components/Message";
 
 const chat = new ChatPage({
     account: new Account({}),
@@ -29,9 +29,6 @@ const chat = new ChatPage({
             })
     ),
 });
-// setTimeout(() => {
-//     chat.setProps({ currentChat: [] });
-// }, 1000);
 
 const routes: Record<string, Block> = {
     homepage: new LoginPage({
@@ -42,13 +39,7 @@ const routes: Record<string, Block> = {
                     type: "text",
                     name: "login",
                     isRequired: true,
-                    // Text: this?.value ?? "",
                     text: "Логин",
-                    events: {
-                        change() {
-                            console.log(333);
-                        },
-                    },
                 }),
                 new Input({
                     type: "password",
@@ -61,7 +52,57 @@ const routes: Record<string, Block> = {
             footer: '<a href="/registration" class="link">Нет аккаунта?</a>',
         }),
     }),
-    registration: new RegistrationPage({}),
+    registration: new RegistrationPage({
+        form: new Form({
+            title: "Регистрация",
+            fields: [
+                new Input({
+                    type: "email",
+                    name: "email",
+                    isRequired: true,
+                    text: "Почта",
+                }),
+                new Input({
+                    type: "login",
+                    name: "login",
+                    isRequired: true,
+                    text: "Логин",
+                }),
+                new Input({
+                    type: "text",
+                    name: "first_name",
+                    isRequired: true,
+                    text: "Имя",
+                }),
+                new Input({
+                    type: "text",
+                    name: "second_name",
+                    isRequired: true,
+                    text: "Фамилия",
+                }),
+                new Input({
+                    type: "tel",
+                    name: "phone",
+                    isRequired: true,
+                    text: "Телефон",
+                }),
+                new Input({
+                    type: "password",
+                    name: "password",
+                    isRequired: true,
+                    text: "Пароль",
+                }),
+                new Input({
+                    type: "password",
+                    name: "password_2",
+                    isRequired: true,
+                    text: "Пароль",
+                }),
+            ],
+            button: new Button({ text: "Регистрация" }),
+            footer: '<a href="/" class="link">Войти?</a>',
+        }),
+    }),
     chat: chat,
     error500: new ErrorPage({
         errorCode: "500 ",
