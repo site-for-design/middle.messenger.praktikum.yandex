@@ -59,7 +59,7 @@ const scripts = () => {
 
             const formData = new FormData(e.target as HTMLFormElement);
 
-            const data = {};
+            const data: { [key: string]: FormDataEntryValue } = {};
             formData.forEach((val, key) => {
                 data[key] = val;
             });

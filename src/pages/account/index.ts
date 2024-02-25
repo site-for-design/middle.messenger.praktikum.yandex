@@ -47,17 +47,18 @@ const scripts = () => {
         ?.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            const error = document.querySelector<HTMLElement>(
-                ".modal.change-avatar .error"
-            );
+            // TODO: fix it
+            // const error = document.querySelector<HTMLElement>(
+            //     ".modal.change-avatar .error"
+            // );
 
-            if (error) {
-                if (e.target?.[0]?.files[0]) {
-                    error.style.display = "none";
-                } else {
-                    error.style.display = "block";
-                }
-            }
+            // if (error) {
+            //     if (e.target?.[0]?.files[0]) {
+            //         error.style.display = "none";
+            //     } else {
+            //         error.style.display = "block";
+            //     }
+            // }
         });
 
     document

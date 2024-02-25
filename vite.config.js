@@ -27,9 +27,7 @@ export default defineConfig({
             scss: {
                 additionalData(source, fp) {
                     if (fp.endsWith("variables.scss")) return source;
-                    return (
-                        `@import "./src/assets/scss/variables.scss";` + source
-                    );
+                    return `@import "./src/assets/scss/variables";` + source;
                 },
             },
         },
