@@ -7,7 +7,7 @@ const validateInput = (
     errorText: string
 ) => {
     const input = <HTMLInputElement>document.querySelector(`[name="${name}"]`);
-    const inputWrap = input.parentElement;
+    const inputWrap = input?.parentElement;
 
     if (inputWrap?.getElementsByClassName(ERROR_ELEM_CLASSNAME).length === 0) {
         const errorElem = document.createElement("span");
@@ -16,7 +16,7 @@ const validateInput = (
         inputWrap?.appendChild(errorElem);
     }
 
-    if (validateFc(input.value)) {
+    if (validateFc(input?.value)) {
         inputWrap?.classList.remove(VISIBLE_ERROR_CLASSNAME);
         return true;
     } else {

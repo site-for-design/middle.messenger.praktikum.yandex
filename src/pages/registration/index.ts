@@ -1,58 +1,76 @@
-import { compile } from "handlebars";
 import tpl from "./tpl.hbs?raw";
-import "./styles.scss";
 import validateInput from "../../utils/validateInput";
-import {
-    EMAIL_REGEX,
-    PHONE_REGEX,
-    PASSWORD_REGEX,
-} from "../../constants/constants";
+import Block from "../../services/Block";
+import * as REGEX from "../../constants/constants";
+import "./styles.scss";
 
-export default (props = {}) => {
-    const script = () => {
-        document
-            .querySelector(".form")
-            ?.addEventListener("submit", function (e) {
-                e.preventDefault();
+const scripts = () => {
+    document.querySelector(".form")?.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-                const isFormValid =
-                    [
-                        validateInput(
-                            "email",
-                            (val) => !!val?.match(EMAIL_REGEX),
-                            "Неверная почта"
-                        ),
-                        validateInput(
-                            "phone",
-                            (val) => !!val?.match(PHONE_REGEX),
-                            "Неверный телефон"
-                        ),
-                        validateInput(
-                            "password",
-                            (val) => !!val?.match(PASSWORD_REGEX),
-                            "Минимум 8 символов"
-                        ),
-                        validateInput(
-                            "password_2",
-                            (val) =>
-                                val ===
-                                (<HTMLInputElement>(
-                                    document.querySelector(
-                                        'input[name="password"]'
-                                    )
-                                )).value,
-                            "Пароли не совпадают"
-                        ),
-                    ].filter((val) => !val).length === 0;
+        const isFormValid =
+            [
+                validateInput(
+                    "email",
+                    (val) => Boolean(val?.match(REGEX.EMAIL_REGEX)),
+                    "Неверная почта"
+                ),
+                validateInput(
+                    "login",
+                    (val) => Boolean(val?.match(REGEX.LOGIN_REGEX)),
+                    "Неверный логин"
+                ),
+                validateInput(
+                    "first_name",
+                    (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
+                    "Неверное имя"
+                ),
+                validateInput(
+                    "second_name",
+                    (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
+                    "Неверная Фамилия"
+                ),
+                validateInput(
+                    "phone",
+                    (val) => Boolean(val?.match(REGEX.PHONE_REGEX)),
+                    "Неверный телефон"
+                ),
+                validateInput(
+                    "password",
+                    (val) => Boolean(val?.match(REGEX.PASSWORD_REGEX)),
+                    "Минимум 8 символов"
+                ),
+                validateInput(
+                    "password_2",
+                    (val) =>
+                        val ===
+                        document.querySelector<HTMLInputElement>(
+                            'input[name="password"]'
+                        )?.value,
+                    "Пароли не совпадают"
+                ),
+            ].filter((val) => !val).length === 0;
 
-                if (isFormValid) {
-                    alert("Вы успешно зарегестрированы!");
-                }
-            });
-    };
+        if (isFormValid) {
+            alert("Вы успешно зарегестрированы!");
+        }
 
-    return {
-        html: compile(tpl)(props),
-        js: script,
-    };
+        const formData = new FormData(e.target as HTMLFormElement);
+
+        const data = {};
+        formData.forEach((val, key) => {
+            data[key] = val;
+        });
+        console.log(data);
+    });
 };
+
+export default class Registration extends Block {
+    componentDidMount() {
+        scripts();
+    }
+
+    render() {
+        return this.compile(tpl, { ...this.props });
+    }
+}

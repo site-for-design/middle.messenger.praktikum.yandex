@@ -1,42 +1,50 @@
-import { compile } from "handlebars";
 import tpl from "./tpl.hbs?raw";
-import "./styles.scss";
+import Block from "../../services/Block";
 import validateInput from "../../utils/validateInput";
+import "./styles.scss";
 
 const mockCredentials = {
     login: "login",
     password: "password",
 };
 
-export default (props = {}) => {
-    const script = () => {
-        document
-            .querySelector(".form")
-            ?.addEventListener("submit", function (e) {
-                e.preventDefault();
+const scripts = () => {
+    document.querySelector(".form")?.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-                const isFormValid =
-                    [
-                        validateInput(
-                            "login",
-                            (val) => val === mockCredentials.login,
-                            "Неверный логин"
-                        ),
-                        validateInput(
-                            "password",
-                            (val) => val === mockCredentials.password,
-                            "Неверный пароль"
-                        ),
-                    ].filter((val) => !val).length === 0;
+        const isFormValid =
+            [
+                validateInput(
+                    "login",
+                    (val) => val === mockCredentials.login,
+                    "Неверный логин"
+                ),
+                validateInput(
+                    "password",
+                    (val) => val === mockCredentials.password,
+                    "Неверный пароль"
+                ),
+            ].filter((val) => !val).length === 0;
 
-                if (isFormValid) {
-                    window.location.href = "chat";
-                }
-            });
-    };
+        if (isFormValid) {
+            window.location.href = "chat";
+        }
 
-    return {
-        html: compile(tpl)(props),
-        js: script,
-    };
+        const formData = new FormData(e.target as HTMLFormElement);
+
+        const data = {};
+        formData.forEach((val, key) => {
+            data[key] = val;
+        });
+    });
 };
+
+export default class Login extends Block {
+    componentDidMount() {
+        scripts();
+    }
+
+    render() {
+        return this.compile(tpl, this.props);
+    }
+}

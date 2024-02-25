@@ -1,5 +1,8 @@
+/* eslint-disable */
+export const PHONE_REGEX = /^\+?\d{9,14}$/;
 export const EMAIL_REGEX =
- /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-export const PHONE_REGEX =
- /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gm;
-export const PASSWORD_REGEX = /^.{8,}$/;
+    /^(?=.*[@])[a-zA-Z0-9_-]+@[a-zA-Z]+(?:\.[a-zA-Z]+)+$/;
+export const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,40}$/;
+export const NAME_REGEX = /^[А-ЯA-ZЁ].*$/;
+export const LOGIN_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9_-]{3,20}$/;
+export const MESSAGE_REGEX = /.+/;

@@ -1,5 +1,5 @@
 <section id="login">
-    <form class="form">
+    {{!-- <form class="form">
         <h1 class="title">Вход</h1>
         <label class="input-wrap">
             <input type="text" name="login" required>
@@ -11,14 +11,6 @@
         </label>
         <button type="submit" class="btn">Вход</button>
         <a href="/registration" class="link">Нет аккаунта?</a>
-    </form>
+    </form> --}}
+    {{{form}}}
 </section>
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-        document.querySelector('.form').addEventListener('submit', function(e) {
-            e.preventDefault()
-            console.log(e);
-            console.log('dsdg');
-        })
-    });
-</script>

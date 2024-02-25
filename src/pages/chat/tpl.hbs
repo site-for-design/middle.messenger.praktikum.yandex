@@ -6,22 +6,11 @@
                 <input type="text" required>
                 <span>Поиск</span>
             </form>
+    {{{button}}}
         </div>
         <div class="content">
             <ul class="chat-list">
-                {{#each chatList}}
-                    <li class="chat-list__item">
-                        <div class="image no-image"></div>
-                        <div class="text">
-                            <h4>{{name}}</h4>
-                            <div class="message">
-                                {{message}}
-                            </div>
-                        </div>
-                        <div class="time">{{date}}</div>
-                        <div class="messages-count">{{countMessages}}</div>
-                    </li>
-                {{/each}}
+                {{{chatList}}}
             </ul>
         </div>
     </div>
@@ -55,17 +44,7 @@
             </div>
             <div class="body">
                 <div class="day">
-                    {{#each currentChat}}
-                        {{!-- TODO: paste date here --}}
-                        {{!-- <div class="date">19 июня</div> --}}
-                        {{!-- {{{date}}} --}}
-                        <div class="message {{userId}}{{#if checked}} checked{{/if}}">
-                            <div class="content">
-                                {{{message}}}
-                            </div>
-                            <div class="time">{{date}}</div>
-                        </div>
-                    {{/each}}
+                    {{{currentChat}}}
                 </div>
             </div>
             <form class="footer">
@@ -115,6 +94,7 @@
         </div>
     </div>
 </section>
+{{{account}}}
 <div class="modal form add-user">
     <h3 class="title">Добавить пользователя</h3>
     <form>

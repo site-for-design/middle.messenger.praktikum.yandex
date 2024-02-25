@@ -1,12 +1,13 @@
-import { compile } from "handlebars";
-import tpl from "./tpl.hbs?raw";
-import "./styles.scss";
+import Block from '../../services/Block';
+import tpl from './tpl.hbs?raw';
+import './styles.scss';
 
-export default (props = {}) => {
- const script = () => {};
-
- return {
-  html: compile(tpl)(props),
-  js: script,
- };
-};
+// Type ErrorProps = {
+//     errorCode: string;
+//     justification: string;
+// };
+export default class Error extends Block {
+	render() {
+		return this.compile(tpl, this.props);
+	}
+}
