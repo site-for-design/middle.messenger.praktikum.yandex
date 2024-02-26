@@ -232,7 +232,7 @@ export default class Block {
     }
 
     _makeProxy(props: ObjectT) {
-        const handleEventBus = (key: string | symbol, value: any) => {
+        const handleEventBus = (key: string | symbol, value: unknown) => {
             this.eventBus().emit(Block.EVENTS.FLOW_CDU, this, {
                 ...this,
                 [key]: value,
