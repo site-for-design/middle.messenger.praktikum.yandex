@@ -5,15 +5,15 @@ enum METHODS {
     DELETE = "DELETE",
 }
 
-type Options = { method: METHODS; data?: string };
+type Options = { method: METHODS; data?: Record<string, unknown> };
 
-const convertToParamsUrl = (data = {}) => {
+const convertToParamsUrl = (data: Record<string, unknown> = {}) => {
     return Object.keys(data).reduce((acc, key, index) => {
         return acc + (index === 0 ? "?" : "&") + `${key}=${data[key]}`;
     }, "");
 };
 
-function queryStringify(data) {
+function queryStringify(data?: Record<string, unknown>) {
     return data ? JSON.stringify(data) : "";
 }
 
