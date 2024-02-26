@@ -6,14 +6,17 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 h2 {
     font-size: 16px;
 }
+
 h3 {
     font-size: 15px;
 }
+
 .btn {
-    transition: .2s;
+    transition: 0.2s;
     cursor: pointer;
     width: 280px;
     max-width: 100%;
@@ -24,142 +27,70 @@ h3 {
     font-size: 13px;
     text-align: center;
     color: #fff;
-    background-color: $primaryColor;
+    background-color: $primary-color;
+
     &:hover {
-        transition: .2s;
-        background-color: $darkPrimaryColor;
+        transition: 0.2s;
+        background-color: $dark-primary-color;
     }
 }
+
 .link {
-    transition: .2s;
+    transition: 0.2s;
     cursor: pointer;
     font-size: 11px;
-    color: $primaryColor;
+    color: $primary-color;
+
     &.red {
-        color: $redColor;
+        color: $red-color;
+
         &:hover {
-            transition: .2s;
-            color: darken($redColor, 10%);
+            transition: 0.2s;
+            opacity: 0.8;
         }
     }
+
     &:hover {
-        transition: .2s;
-        color: $darkPrimaryColor;
+        transition: 0.2s;
+        color: $dark-primary-color;
     }
 }
+
 .title {
     font-size: 20px;
     width: 100%;
     text-align: center;
 }
 
-.form {
-    width: 340px;
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0px 0px 6px 0px #00000024;
-    padding: 30px;
-    padding-top: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .title {
-        margin-bottom: 40px;
-    }
-    .error-title {
-        color: $redColor;
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .link {
-        margin-top: 14px;
-    }
-    .input-wrap {
-        width: 100%;
-        margin-bottom: 16px;
-        position: relative;
-        display: block;
-        .label {
-            position: absolute;
-            left: 0;
-            bottom: 8px;
-            pointer-events: none;
-            transition: 0.2s ease all;
-            color: $lightTextColor;
-        }
-        input {
-            padding-top: 20px;
-            border-bottom: 1px solid #3369F3;
-            width: 100%;
-            padding-bottom: 6px;
-        }
-        input:focus ~ .label,
-        input:not(:focus):valid ~ .label{
-          bottom: 25px;
-          font-size: 9px;
-        }
-        .prompt {
-            display: none;
-            position: absolute;
-            left: 0;
-            bottom: -16px;
-            font-size: 8px;
-            font-weight: 400;
-            color: $redColor;
-        }
-        &.error {
-            .prompt {
-                display: block;
-            }
-        }
-    }
-    .file-wrap {
-        margin-top: 0;
-        cursor: pointer;
-        text-align: center;
-        input {
-            display: none;
-        }
-        .link {
-        text-decoration: underline;
-        }
-        .filename {
-            color: #8D8D8D; 
-        }
-    }   
-    button {
-        margin-top: 60px;
-    }
-}
-
 .modal {
-    transition: .4s;
+    transition: 0.4s;
     opacity: 0;
     visibility: hidden;
     z-index: 4;
-    padding: 40px 30px; 
+    padding: 40px 30px;
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
+
     .title {
         font-size: 15px;
     }
+
     button {
         margin-top: 16px;
     }
+
     &.active {
-        transition: .4s;
+        transition: 0.4s;
         opacity: 1;
         visibility: visible;
     }
 }
+
 .overlay {
-    transition: .4s;
+    transition: 0.4s;
     opacity: 0;
     visibility: hidden;
     z-index: 3;
@@ -170,8 +101,9 @@ h3 {
     width: 100vw;
     height: 100vh;
     background-color: #000;
+
     &.active {
-        transition: .4s;
+        transition: 0.4s;
         opacity: 0.4;
         visibility: visible;
     }

@@ -1,40 +1,123 @@
-@import '../../assets/scss/variables';
+.dropdown {
+    position: relative;
+    z-index: 2;
+
+    &__icon {
+        transition: 0.2s;
+        cursor: pointer;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            transition: 0.2s;
+            opacity: 0.8;
+        }
+    }
+
+    .dropdown__block {
+        transition: 0.4s;
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        top: 50px;
+        right: -10px;
+        padding: 7.5px 0;
+        box-shadow: 0 0 6px 0 #00000024;
+        background-color: #fff;
+        border-radius: 12px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translateY(-100%);
+            width: 100%;
+            height: 26px;
+        }
+
+        li {
+            transition: 0.2s;
+            cursor: pointer;
+            padding: 7.5px 15px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 22px;
+                min-width: 22px;
+                height: 22px;
+                margin-right: 15px;
+            }
+
+            input {
+                display: none;
+            }
+
+            &:hover {
+                transition: 0.2s;
+                background-color: $bg-color;
+            }
+        }
+    }
+
+    &:hover {
+        transition: 0.4s;
+
+        .dropdown__block {
+            transition: 0.4;
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
 
 section#chat {
     display: flex;
+
     .sidebar {
         height: 100vh;
         overflow-y: auto;
         width: 310px;
         padding: 20px 10px 0;
-        border-right: 1px solid $bgColor;
+        border-right: 1px solid $bg-color;
         -ms-overflow-style: thin;
         scrollbar-width: thin;
+
         .head {
             text-align: right;
+
             .profile {
-                transition: .2s;
+                transition: 0.2s;
                 cursor: pointer;
                 display: inline-block;
                 font-size: 12px;
-                color: $lightTextColor;
-                &:after {
-                    content: url(../img/ar-right.svg);
+                color: $light-text-color;
+
+                &::after {
+                    content: url("../../assets/img/ar-right.svg");
                     display: inline-block;
                     margin-left: 8px;
                 }
+
                 &:hover {
-                    transition: .2s;
-                    color: $textColor;
+                    transition: 0.2s;
+                    color: $text-color;
                 }
             }
+
             .search {
                 position: relative;
                 margin-top: 23px;
                 height: 32px;
                 line-height: 32px;
                 border-radius: 5px;
-                background-color: $bgColor;
+                background-color: $bg-color;
+
                 span {
                     position: absolute;
                     left: 50%;
@@ -42,73 +125,78 @@ section#chat {
                     transform: translate(-50%, -50%);
                     pointer-events: none;
                     font-size: 12px;
-                    color: $lightTextColor;
+                    color: $light-text-color;
                     display: flex;
                     align-items: center;
-                    &:before {
-                        content: url(../img/search.svg);
+
+                    &::before {
+                        content: url("../../assets/img/search.svg");
                         height: 20px;
                     }
                 }
+
                 input {
                     text-align: center;
                     width: 100%;
                 }
+
                 input:focus ~ span,
-                input:not(:focus):valid ~ span{
+                input:not(:focus):valid ~ span {
                     visibility: hidden;
                 }
             }
         }
+
         .content {
             margin-top: 14px;
+
             .chat-list {
                 &__item {
                     cursor: pointer;
                     position: relative;
                     padding: 12px 0;
-                    border-bottom: 1px solid $bgColor;
+                    border-bottom: 1px solid $bg-color;
                     display: flex;
                     align-items: flex-start;
+
                     .image {
-                        margin-right: 10px;
                         width: 47px;
                         min-width: 47px;
                         height: 47px;
                         border-radius: 50%;
                         margin-right: 10px;
+
                         &.no-image {
-                            background-image: url(../img/noImage.svg);
+                            background-image: url("../../assets/img/noImage.svg");
                             background-size: contain;
                         }
                     }
+
                     h4 {
                         font-size: 13px;
-                        color: $textColor;
+                        color: $text-color;
                     }
+
                     .message {
                         padding-right: 40px;
                         margin-top: 4px;
-                        color: $lightTextColor;
+                        color: $light-text-color;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                        display: -moz-box;
-                        -moz-box-orient: vertical;
-                        display: -webkit-box;
-                        -webkit-line-clamp: 2;
-                        -webkit-box-orient: vertical;
                         line-clamp: 2;
-                        box-orient: vertical;
+
                         .my {
-                            color: $textColor;
+                            color: $text-color;
                         }
                     }
+
                     .time {
                         font-size: 9px;
                         position: absolute;
                         right: 0;
                         top: 12px;
                     }
+
                     .messages-count {
                         position: absolute;
                         right: 0;
@@ -120,38 +208,43 @@ section#chat {
                         border-radius: 50%;
                         font-size: 11px;
                         color: #fff;
-                        background-color: $primaryColor;
+                        background-color: $primary-color;
                     }
-                    &:before {
+
+                    &::before {
                         opacity: 0;
                         z-index: -1;
-                        content: '';
+                        content: "";
                         position: absolute;
                         left: -10px;
                         top: 2px;
                         width: calc(100% + 20px);
                         height: calc(100% - 4px);
-                        background-color: $lightPrimaryColor;
+                        background-color: $light-primary-color;
                     }
+
                     &:hover {
-                        &:before {
-                            opacity: .9;
-                            background-color: $bgColor;
-                            transition: .2s;
+                        &::before {
+                            opacity: 0.9;
+                            background-color: $bg-color;
+                            transition: 0.2s;
                         }
                     }
+
                     &.active {
-                        &:before {
+                        &::before {
                             opacity: 1;
-                            transition: .2s;
+                            transition: 0.2s;
                         }
                     }
                 }
             }
         }
     }
+
     .main {
         width: calc(100% - 310px);
+
         .empty {
             width: 100%;
             height: 100%;
@@ -159,8 +252,9 @@ section#chat {
             justify-content: center;
             align-items: center;
             font-size: 12px;
-            color: $lightTextColor
+            color: $light-text-color;
         }
+
         .chat {
             padding: 0 20px;
             position: relative;
@@ -168,71 +262,101 @@ section#chat {
             flex-direction: column;
             height: 100vh;
             min-height: 600px;
+
             .header {
                 height: 55px;
                 padding: 10px;
                 display: flex;
                 align-items: center;
-                border-bottom: 1px solid $bgColor;
+                border-bottom: 1px solid $bg-color;
+
                 .user {
                     margin-right: auto;
                     display: flex;
                     align-items: center;
                     font-weight: 600;
+
                     .image {
-                        margin-right: 10px;
                         width: 34px;
                         min-width: 34px;
                         height: 34px;
                         border-radius: 50%;
                         margin-right: 10px;
+
                         &.no-image {
-                            background-image: url(../img/noImage.svg);
+                            background-image: url("../../assets/img/noImage.svg");
                             background-size: contain;
                         }
                     }
                 }
             }
+
             .body {
                 padding: 30px;
                 overflow-y: auto;
+
                 .day {
                     width: 100%;
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
                 }
+
                 .date {
-                    color: $lightTextColor;
+                    color: $light-text-color;
                     margin: 0 auto;
                     margin-bottom: 30px;
                 }
+
                 .message {
                     position: relative;
                     margin-bottom: 10px;
                     padding: 10px 10px 20px 20px;
                     max-width: 410px;
                     border-radius: 12px;
+
                     .content {
                         display: flex;
-                        flex-wrap: wrap;
-                        flex-direction: column;
+                        flex-flow: column wrap;
                     }
+
                     p {
                         margin-bottom: 20px;
+
                         &:last-of-type {
                             margin-bottom: 0;
                         }
                     }
+
                     .time {
                         position: absolute;
                         right: 10px;
                         bottom: 10px;
                         font-size: 9px;
                     }
+
+                    &.current-user {
+                        background-color: $light-primary-color;
+                        padding-right: 60px;
+                        margin-left: auto;
+
+                        .time {
+                            display: flex;
+                            color: $primary-color;
+                        }
+
+                        &.checked {
+                            .time::before {
+                                content: url("../../assets/img/checked.svg");
+                                margin-right: 4px;
+                            }
+                        }
+                    }
+
                     &:has(.content img) {
                         padding: 0;
-                        border: 1px solid $bgColor;
+                        border: 1px solid $bg-color;
+
                         .time {
                             height: 13px;
                             line-height: 13px;
@@ -242,61 +366,54 @@ section#chat {
                             background: #52525280;
                         }
                     }
-                    &.current-user {
-                        background-color: $lightPrimaryColor;
-                        padding-right: 60px;
-                        margin-left: auto;
-                        .time {
-                            display: flex;
-                            color: $primaryColor
-                        }
-                        &.checked {
-                            .time:before {
-                                content: url(../img/checked.svg);
-                                margin-right: 4px;
-                            }
-                        }
-                    }
                 }
             }
+
             .footer {
                 margin-top: auto;
-                border-top: 1px solid $bgColor;
+                border-top: 1px solid $bg-color;
                 display: flex;
                 align-items: flex-start;
                 padding: 10px 0;
+
                 .dropdown {
-                    &__icon {
+                    .dropdown__icon {
                         margin-right: 10px;
                         width: 32px;
                         height: 32px;
                     }
+
                     &__block {
                         top: initial;
                         right: initial;
                         bottom: 52px;
                         left: -10px;
-                        &:before {
+
+                        &::before {
                             top: initial;
                             bottom: 0;
                             transform: translateY(100%);
                         }
                     }
+
                     label {
                         display: flex;
                         align-items: center;
                     }
+
                     &:hover {
                         .dropdown__icon {
                             path {
-                                fill: $primaryColor;
+                                fill: $primary-color;
                             }
                         }
                     }
                 }
+
                 .type-text {
                     margin-right: 10px;
                     width: 100%;
+
                     textarea {
                         position: relative;
                         resize: none;
@@ -306,97 +423,31 @@ section#chat {
                         width: 100%;
                         max-height: 200px;
                         height: 32px;
-                        line-height: 32px;
                         border-radius: 30px;
-                        background-color: $bgColor;
+                        background-color: $bg-color;
                         padding: 10px 20px;
                         line-height: 20px;
+
                         &::placeholder {
-                            color: $lightTextColor;
+                            color: $light-text-color;
                             position: absolute;
                             top: 6px;
                             left: 20px;
                         }
                     }
                 }
+
                 .submit {
                     cursor: pointer;
                     margin-top: 2px;
                     width: 28px;
                     height: 28px;
-                    background-image: url(../img/ar-circle.svg);
+                    background-image: url("../../assets/img/ar-circle.svg");
                     background-size: contain;
                     background-repeat: no-repeat;
                     transform: rotate(180deg);
                 }
             }
-        }
-    }
-}
-.dropdown {
-    position: relative;
-    z-index: 2;
-    &__icon {
-        transition: .2s;
-        cursor: pointer;
-        width: 25px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &:hover {
-            transition: .2s;
-            opacity: .8;
-        }
-    }
-    &__block {
-        transition: .4s;
-        opacity: 0;
-        visibility: hidden;
-        position: absolute;
-        top: 50px;
-        right: -10px;
-        padding: 7.5px 0;
-        box-shadow: 0px 0px 6px 0px #00000024;
-        background-color: #fff;
-        border-radius: 12px;
-        &:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: translateY(-100%);
-            width: 100%;
-            height: 26px;
-        }
-        li {
-            transition: .2s;
-            cursor: pointer;
-            padding: 7.5px 15px;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            img {
-                width: 22px;
-                min-width: 22px;
-                height: 22px;
-                margin-right: 15px;
-            }
-            input {
-                display: none;
-            }
-            &:hover {
-                transition: .2s;
-                background-color: $bgColor;
-            }
-        }
-    }
-    &:hover {
-        transition: .4s;
-        .dropdown__block {
-            transition: .4;
-            opacity: 1;
-            visibility: visible;
         }
     }
 }

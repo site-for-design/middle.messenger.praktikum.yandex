@@ -1,0 +1,51 @@
+.form {
+    width: 340px;
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 6px 0 #00000024;
+    padding: 30px;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .title {
+        margin-bottom: 40px;
+    }
+
+    .error-title {
+        color: $red-color;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .link {
+        margin-top: 14px;
+    }
+
+    .file-wrap {
+        margin-top: 0;
+        cursor: pointer;
+        text-align: center;
+
+        input {
+            display: none;
+        }
+
+        .link {
+            text-decoration: underline;
+        }
+
+        .filename {
+            color: #8d8d8d;
+        }
+    }
+
+    button {
+        margin-top: 60px;
+    }
+}
