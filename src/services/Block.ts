@@ -4,6 +4,8 @@ import EventBus from "./EventBus";
 
 type CreatedElement = HTMLElement | HTMLTemplateElement | DocumentFragment;
 
+type ObjectT = Record<string | symbol, any>;
+
 export default class Block {
     static EVENTS = {
         INIT: "init",
@@ -17,14 +19,14 @@ export default class Block {
         tagName?: keyof HTMLElementTagNameMap;
     };
 
-    props: Record<string, Block>;
+    props: ObjectT;
     children: Record<string, Block>;
     lists: Record<string, Block[]>;
 
     eventBus: () => EventBus;
     _element: CreatedElement;
     _id: string;
-    events?: Record<string, unknown>;
+    events?: ObjectT;
 
     /** JSDoc
      * @param {string} tagName
@@ -59,17 +61,17 @@ export default class Block {
         return this._element;
     }
 
-    _registerEvents(eventBus) {
+    _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
 
-    _getChildren(propsAndChildren) {
-        const props = {};
-        const children = {};
-        const lists = {};
+    _getChildren(propsAndChildren: ObjectT) {
+        const props: ObjectT = {};
+        const children: ObjectT = {};
+        const lists: ObjectT = {};
 
         Object.entries(propsAndChildren).forEach(([key, value]) => {
             if (value instanceof Block) {
@@ -84,7 +86,7 @@ export default class Block {
         return { props, children, lists };
     }
 
-    compile(template, props): DocumentFragment {
+    compile(template: string, props: ObjectT): DocumentFragment {
         const propsAndStubs = { ...props };
 
         Object.entries(this.children).forEach(
@@ -154,13 +156,13 @@ export default class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps, newProps) {
+    _componentDidUpdate(oldProps: unknown, newProps: unknown) {
         const response = this.componentDidUpdate(oldProps, newProps);
         return response;
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidUpdate(oldProps, newProps) {
+    componentDidUpdate(oldProps: unknown, newProps: unknown) {
         if (oldProps !== newProps) {
             // this._render();
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -170,7 +172,7 @@ export default class Block {
         return false;
     }
 
-    setProps = (newProps) => {
+    setProps = (newProps: ObjectT) => {
         if (!newProps) {
             return;
         }
@@ -229,8 +231,8 @@ export default class Block {
         });
     }
 
-    _makeProxy(props) {
-        const handleEventBus = (key, value) => {
+    _makeProxy(props: ObjectT) {
+        const handleEventBus = (key: string | symbol, value: any) => {
             this.eventBus().emit(Block.EVENTS.FLOW_CDU, this, {
                 ...this,
                 [key]: value,

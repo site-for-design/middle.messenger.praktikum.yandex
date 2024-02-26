@@ -220,7 +220,7 @@ section#chat {
                         top: 2px;
                         width: calc(100% + 20px);
                         height: calc(100% - 4px);
-                        background-color: $lightprimary-color;
+                        background-color: $light-primary-color;
                     }
 
                     &:hover {
@@ -336,7 +336,7 @@ section#chat {
                     }
 
                     &.current-user {
-                        background-color: $lightprimary-color;
+                        background-color: $light-primary-color;
                         padding-right: 60px;
                         margin-left: auto;
 
