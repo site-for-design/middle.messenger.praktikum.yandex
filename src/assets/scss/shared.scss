@@ -6,12 +6,15 @@
     display: flex;
     flex-wrap: wrap;
 }
+
 h2 {
     font-size: 16px;
 }
+
 h3 {
     font-size: 15px;
 }
+
 .btn {
     transition: 0.2s;
     cursor: pointer;
@@ -25,28 +28,34 @@ h3 {
     text-align: center;
     color: #fff;
     background-color: $primary-color;
+
     &:hover {
         transition: 0.2s;
         background-color: $dark-primary-color;
     }
 }
+
 .link {
     transition: 0.2s;
     cursor: pointer;
     font-size: 11px;
     color: $primary-color;
+
     &.red {
         color: $red-color;
+
         &:hover {
             transition: 0.2s;
             opacity: 0.8;
         }
     }
+
     &:hover {
         transition: 0.2s;
         color: $dark-primary-color;
     }
 }
+
 .title {
     font-size: 20px;
     width: 100%;
@@ -64,18 +73,22 @@ h3 {
     top: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
+
     .title {
         font-size: 15px;
     }
+
     button {
         margin-top: 16px;
     }
+
     &.active {
         transition: 0.4s;
         opacity: 1;
         visibility: visible;
     }
 }
+
 .overlay {
     transition: 0.4s;
     opacity: 0;
@@ -88,6 +101,7 @@ h3 {
     width: 100vw;
     height: 100vh;
     background-color: #000;
+
     &.active {
         transition: 0.4s;
         opacity: 0.4;

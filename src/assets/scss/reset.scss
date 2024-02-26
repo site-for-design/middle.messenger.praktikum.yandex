@@ -23,6 +23,7 @@ button {
     cursor: revert;
     border: none;
     outline: none;
+
     &:focus {
         border: none;
     }
@@ -51,7 +52,7 @@ table {
 input,
 textarea {
     border: none;
-    -webkit-user-select: auto;
+    user-select: auto;
 }
 
 /* revert the 'white-space' property for textarea elements on Safari */
