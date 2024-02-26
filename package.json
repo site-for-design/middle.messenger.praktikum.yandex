@@ -7,7 +7,7 @@
     "node": "21.1.0"
   },
   "scripts": {
-    "start": "vite build & node server.js",
+    "start": "npm run build && node server.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
