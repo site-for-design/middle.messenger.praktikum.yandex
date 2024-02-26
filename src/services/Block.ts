@@ -4,7 +4,7 @@ import EventBus from "./EventBus";
 
 type CreatedElement = HTMLElement | HTMLTemplateElement | DocumentFragment;
 
-type ObjectT = Record<string | symbol, any>;
+type ObjectT = Record<string, string | Block | Block[]>;
 
 export default class Block {
     static EVENTS = {
@@ -15,13 +15,13 @@ export default class Block {
     };
 
     _meta: {
-        props: Record<string, Block>;
+        props: ObjectT;
         tagName?: keyof HTMLElementTagNameMap;
     };
 
     props: ObjectT;
-    children: Record<string, Block>;
-    lists: Record<string, Block[]>;
+    children: ObjectT;
+    lists: ObjectT;
 
     eventBus: () => EventBus;
     _element: CreatedElement;
@@ -112,7 +112,7 @@ export default class Block {
             stub?.replaceWith(child.getContent());
         });
 
-        Object.entries(this.lists).forEach(([key, item]) => {
+        Object.entries(this.lists).forEach(([key, item]: [string, Block[]]) => {
             const stub = fragment.content.querySelector(`[data-id="${key}"]`);
 
             if (!stub) {
@@ -216,27 +216,34 @@ export default class Block {
     }
 
     _removeEvents() {
-        const { events = {} } = this.props;
-
-        Object.keys(events).forEach((eventName) => {
-            this._element.removeEventListener(eventName, events[eventName]);
-        });
+        const { events }: { events?: { [key: string]: () => void } } =
+            this.props;
+        if (events) {
+            Object.keys(events).forEach((eventName) => {
+                this._element.removeEventListener(eventName, events[eventName]);
+            });
+        }
     }
 
     _addEvents() {
-        const { events = {} } = this.props;
-
-        Object.keys(events).forEach((eventName) => {
-            this._element.addEventListener(eventName, events[eventName]);
-        });
+        const { events }: { events?: { [key: string]: () => void } } =
+            this.props;
+        if (events) {
+            Object.keys(events).forEach((eventName) => {
+                this._element.addEventListener(eventName, events[eventName]);
+            });
+        }
     }
 
     _makeProxy(props: ObjectT) {
         const handleEventBus = (key: string | symbol, value: unknown) => {
-            this.eventBus().emit(Block.EVENTS.FLOW_CDU, this, {
-                ...this,
-                [key]: value,
-            });
+            this.eventBus().emit(Block.EVENTS.FLOW_CDU, [
+                this,
+                {
+                    ...this,
+                    [key]: value,
+                },
+            ]);
         };
 
         // Здесь необходимо правильно обновить пропсы так,
@@ -244,7 +251,7 @@ export default class Block {
 
         const proxy = new Proxy(props, {
             set(target, prop, value) {
-                target[prop] = value;
+                target[prop as string] = value;
 
                 handleEventBus(prop, value);
 

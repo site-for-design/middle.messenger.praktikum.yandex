@@ -1,11 +1,11 @@
 class EventBus {
-    listeners: Record<string, Function[]>;
+    listeners: Record<string, ((...args: unknown[]) => void)[]>;
 
     constructor() {
         this.listeners = {};
     }
 
-    on(event: string, callback: Function) {
+    on(event: string, callback: () => void) {
         //Код здесь
         if (!this.listeners[event]) {
             this.listeners[event] = [];
@@ -13,7 +13,7 @@ class EventBus {
         this.listeners[event].push(callback);
     }
 
-    off(event: string, callback: Function) {
+    off(event: string, callback: () => void) {
         //Код здесь
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
@@ -23,14 +23,13 @@ class EventBus {
         );
     }
 
-    emit(event: string, ...args: any) {
+    emit(event: string, args?: unknown[]) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
         let response;
-        this.listeners[event].forEach((listener: Function) => {
-            // listener(...args);
-            response = listener(...args);
+        this.listeners[event].forEach((listener) => {
+            response = args ? listener(...args) : listener();
         });
         return response;
     }
