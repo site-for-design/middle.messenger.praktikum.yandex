@@ -1,0 +1,68 @@
+{
+ "chat": {
+  "chatList": [
+   {
+    "name": "Design Destroyer2",
+    "message": "Миллионы россиян ежедневно проводят десятки часов своевременно прибегая к нуждам самоорганизации через непосильный труд копьем",
+    "date": "2024-02-05T18:47:05.060Z",
+    "countMessages": "2"
+   },
+   {
+    "name": "Design Destroyer",
+    "message": "Миллионы россиян ежедневно проводят десятки часов своевременно прибегая к нуждам самоорганизации через непосильный труд копьем",
+    "date": "2024-02-08T18:47:05.060Z",
+    "countMessages": "2"
+   },
+   {
+    "name": "Design Destroyer",
+    "message": "Миллионы россиян ежедневно проводят десятки часов своевременно прибегая к нуждам самоорганизации через непосильный труд копьем",
+    "date": "2024-02-07T18:47:05.060Z",
+    "countMessages": "2"
+   },
+   {
+    "name": "Design Destroyer",
+    "message": "Миллионы россиян ежедневно проводят десятки часов своевременно прибегая к нуждам самоорганизации через непосильный труд копьем",
+    "date": "2024-02-08T18:47:05.060Z",
+    "countMessages": "2"
+   }
+  ],
+  "currentChat": [
+    {
+     "userId": "1",
+     "message": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem dignissimos placeat, aliquam consequatur modi labore mollitia eum incidunt, adipisci magnam possimus nesciunt provident ea, quos aliquid blanditiis repudiandae minus vel unde exercitationem explicabo corporis? Vel blanditiis ducimus hic ipsam est.</p>",
+     "date": "2024-02-08T18:47:05.060Z",
+     "checked": true
+    },
+    {
+     "userId": "current-user",
+     "message": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem dignissimos placeat, aliquam consequatur modi labore mollitia eum incidunt, adipisci magnam possimus nesciunt provident ea, quos aliquid blanditiis repudiandae minus vel unde exercitationem explicabo corporis? Vel blanditiis ducimus hic ipsam est.</p>",
+     "date": "2024-02-08T18:47:05.060Z",
+     "checked": true
+    },
+   {
+    "userId": "1",
+    "message": "<p>Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.</p><p>Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.</p>",
+    "date": "2024-02-05T18:47:05.060Z",
+    "checked": true
+   },
+   {
+    "userId": "1",
+    "message": "<img src=\"/img/photo.png\" alt=\"Фотография\">",
+    "date": "2024-02-07T18:47:05.060Z",
+    "checked": true
+   },
+   {
+    "userId": "current-user",
+    "message": "<p>Круто!</p>",
+    "date": "2024-02-08T18:47:05.060Z",
+    "checked": true
+   },
+   {
+    "userId": "current-user",
+    "message": "<p>Lorem ipsum dolor sit amet consectetur adip</p>",
+    "date": "2024-02-08T18:47:05.060Z",
+    "checked": false
+   }
+  ]
+ }
+}
