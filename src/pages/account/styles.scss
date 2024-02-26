@@ -25,7 +25,7 @@ section#account {
         top: 0;
         width: 64px;
         height: 100%;
-        border-right: 1px solid $bgColor;
+        border-right: 1px solid $bg-color;
         background-image: url("../../assets/img/ar-circle.svg");
         background-position: center;
         background-repeat: no-repeat;
@@ -76,7 +76,7 @@ section#account {
 
         li {
             padding: 10px 0;
-            border-bottom: 1px solid $bgColor;
+            border-bottom: 1px solid $bg-color;
             display: flex;
 
             :last-child {
@@ -94,7 +94,7 @@ section#account {
             li {
                 display: flex;
                 padding: 10px 0;
-                border-bottom: 1px solid $bgColor;
+                border-bottom: 1px solid $bg-color;
 
                 :last-child {
                     border-bottom: none;
@@ -109,10 +109,10 @@ section#account {
                     padding-left: 30px;
                     width: 100%;
                     text-align: right;
-                    color: $textColor;
+                    color: $text-color;
 
                     &:disabled {
-                        color: $lightTextColor;
+                        color: $light-text-color;
                     }
                 }
             }

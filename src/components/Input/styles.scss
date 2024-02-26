@@ -10,7 +10,7 @@
         bottom: 8px;
         pointer-events: none;
         transition: 0.2s ease all;
-        color: $lightTextColor;
+        color: $light-text-color;
     }
 
     input {
@@ -33,7 +33,7 @@
         bottom: -16px;
         font-size: 8px;
         font-weight: 400;
-        color: $redColor;
+        color: $red-color;
     }
 
     &.error {

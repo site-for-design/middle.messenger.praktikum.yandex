@@ -24,19 +24,19 @@ h3 {
     font-size: 13px;
     text-align: center;
     color: #fff;
-    background-color: $primaryColor;
+    background-color: $primary-color;
     &:hover {
         transition: 0.2s;
-        background-color: $darkPrimaryColor;
+        background-color: $dark-primary-color;
     }
 }
 .link {
     transition: 0.2s;
     cursor: pointer;
     font-size: 11px;
-    color: $primaryColor;
+    color: $primary-color;
     &.red {
-        color: $redColor;
+        color: $red-color;
         &:hover {
             transition: 0.2s;
             opacity: 0.8;
@@ -44,7 +44,7 @@ h3 {
     }
     &:hover {
         transition: 0.2s;
-        color: $darkPrimaryColor;
+        color: $dark-primary-color;
     }
 }
 .title {

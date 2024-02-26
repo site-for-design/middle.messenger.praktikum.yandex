@@ -10,10 +10,10 @@
     font-size: 13px;
     text-align: center;
     color: #fff;
-    background-color: $primaryColor;
+    background-color: $primary-color;
 
     &:hover {
         transition: 0.2s;
-        background-color: $darkPrimaryColor;
+        background-color: $dark-primary-color;
     }
 }

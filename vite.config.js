@@ -18,7 +18,6 @@ export default defineConfig({
             fix: true,
         }),
         stylelint({
-            // recommend to enable auto fix
             fix: true,
         }),
     ],
