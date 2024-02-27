@@ -17,8 +17,14 @@ function queryStringify(data?: Record<string, unknown>) {
     return data ? JSON.stringify(data) : "";
 }
 
+type HTTPMethod = (
+    url: string,
+    options: Options,
+    timeout?: number
+) => Promise<unknown>;
+
 export default class HTTPTransport {
-    request(url: string, options: Options, timeout: number = 2000) {
+    request: HTTPMethod = (url, options, timeout = 2000) => {
         const { method, data } = options;
 
         return new Promise((resolve, reject) => {
@@ -45,22 +51,17 @@ export default class HTTPTransport {
                 xhr.send(queryStringify(data));
             }
         });
-    }
-
-    get = (url: string, options: Options, timeout: number) => {
-        // return this.request(url, {...options, method: METHODS.GET});
+    };
+    get: HTTPMethod = (url, options, timeout) => {
         return this.request(url, { ...options, method: METHODS.GET }, timeout);
     };
-    post = (url: string, options: Options, timeout: number) => {
-        // return this.request(url, {...options, method: METHODS.GET});
+    post: HTTPMethod = (url, options, timeout) => {
         return this.request(url, { ...options, method: METHODS.POST }, timeout);
     };
-    put = (url: string, options: Options, timeout: number) => {
-        // return this.request(url, {...options, method: METHODS.GET});
+    put: HTTPMethod = (url, options, timeout) => {
         return this.request(url, { ...options, method: METHODS.PUT }, timeout);
     };
-    delete = (url: string, options: Options, timeout: number) => {
-        // return this.request(url, {...options, method: METHODS.GET});
+    delete: HTTPMethod = (url, options, timeout) => {
         return this.request(
             url,
             { ...options, method: METHODS.DELETE },

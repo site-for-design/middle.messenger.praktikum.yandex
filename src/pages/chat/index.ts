@@ -1,6 +1,10 @@
 import tpl from "./tpl.hbs?raw";
 import Block from "../../services/Block";
 import addEventListenerAll from "../../utils/addEventListenerAll";
+import Message from "../../components/Message";
+import MessagePreview from "../../components/MessagePreview";
+import AccountComponent from "../account";
+import mockData from "../../mockData.json";
 import "./styles.scss";
 
 const scripts = () => {
@@ -60,7 +64,7 @@ const scripts = () => {
     }
 };
 
-export default class Chat extends Block {
+class Chat extends Block {
     componentDidMount() {
         scripts();
     }
@@ -69,3 +73,23 @@ export default class Chat extends Block {
         return this.compile(tpl, this.props);
     }
 }
+
+const ChatPage = new Chat({
+    account: AccountComponent,
+    chatList: mockData.chat.chatList.map(
+        (item) =>
+            new MessagePreview({
+                ...item,
+                date: /\d\d:\d\d/.exec(item.date)?.[0] ?? "",
+            })
+    ),
+    currentChat: mockData.chat.currentChat.map(
+        (item) =>
+            new Message({
+                ...item,
+                date: /\d\d:\d\d/.exec(item.date)?.[0] ?? "",
+            })
+    ),
+});
+
+export default ChatPage;

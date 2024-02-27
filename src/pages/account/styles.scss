@@ -43,6 +43,13 @@ section#account {
         border-radius: 50%;
         overflow: hidden;
 
+        .account-image {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            object-position: center;
+        }
+
         .change-image {
             transition: 0.4s;
             opacity: 0;
@@ -86,6 +93,8 @@ section#account {
     }
 
     .user-info {
+        pointer-events: none;
+        opacity: 0.8;
         width: 100%;
 
         ul {
@@ -148,6 +157,9 @@ section#account {
 
     &[data-edit="userInfo"] {
         .user-info {
+            pointer-events: initial;
+            opacity: 1;
+
             ul {
                 display: block;
 
@@ -160,6 +172,9 @@ section#account {
 
     &[data-edit="password"] {
         .user-info {
+            pointer-events: initial;
+            opacity: 1;
+
             ul {
                 display: none;
 

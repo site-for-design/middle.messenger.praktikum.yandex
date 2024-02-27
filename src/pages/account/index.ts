@@ -1,5 +1,6 @@
 import tpl from "./tpl.hbs?raw";
 import Block from "../../services/Block";
+import Link from "../../components/Link";
 import "./styles.scss";
 
 const scripts = () => {
@@ -14,51 +15,42 @@ const scripts = () => {
     });
 
     document
-        .querySelector('[data-click="editPassword"]')
-        ?.addEventListener("click", () => {
-            document
-                .querySelector("section#account")
-                ?.setAttribute("data-edit", "password");
-            const userInfoInputs = document.querySelectorAll(
-                ".user-info li input"
-            );
-            userInfoInputs.forEach((el: HTMLInputElement) => {
-                el.disabled = !el.disabled;
-            });
-        });
-
-    document
-        .querySelector('[data-click="editUserInfo"]')
-        ?.addEventListener("click", () => {
-            document
-                .querySelector("section#account")
-                ?.setAttribute("data-edit", "userInfo");
-            const userInfoInputs = document.querySelectorAll(
-                ".user-info li input"
-            );
-            userInfoInputs.forEach((el: HTMLInputElement) => {
-                el.disabled = !el.disabled;
-            });
-        });
-    // Edit User Info End
-
-    document
         .querySelector(".modal.change-avatar form")
         ?.addEventListener("submit", (e) => {
             e.preventDefault();
 
             // TODO: fix it
-            // const error = document.querySelector<HTMLElement>(
-            //     ".modal.change-avatar .error"
-            // );
+            const error = document.querySelector<HTMLElement>(
+                ".modal.change-avatar .error"
+            );
 
-            // if (error) {
-            //     if (e.target?.[0]?.files[0]) {
-            //         error.style.display = "none";
-            //     } else {
-            //         error.style.display = "block";
-            //     }
-            // }
+            if (error) {
+                const file = document.querySelector<HTMLInputElement>(
+                    ".modal.change-avatar form input[type='file']"
+                );
+
+                if (file?.files?.[0]) {
+                    error.style.display = "none";
+                    console.log(file?.files?.[0]);
+                    const fr = new FileReader();
+                    fr.onload = function () {
+                        const image =
+                            document.querySelector<HTMLImageElement>(
+                                ".account-image"
+                            );
+                        if (image) {
+                            image.src = fr.result as string;
+                        }
+                    };
+                    fr.readAsDataURL(file.files[0]);
+
+                    document
+                        .querySelector(".modal.change-avatar")
+                        ?.classList.remove("active");
+                } else {
+                    error.style.display = "block";
+                }
+            }
         });
 
     document
@@ -121,7 +113,7 @@ const scripts = () => {
         });
 };
 
-export default class Account extends Block {
+class Account extends Block {
     componentDidMount() {
         scripts();
     }
@@ -130,3 +122,42 @@ export default class Account extends Block {
         return this.compile(tpl, this.props);
     }
 }
+
+const AccountComponent = new Account({
+    links: [
+        new Link(
+            {
+                text: "Изменить данные",
+                events: {
+                    click: () => {
+                        document
+                            .querySelector("section#account")
+                            ?.setAttribute("data-edit", "userInfo");
+                    },
+                },
+            },
+            "li"
+        ),
+        new Link(
+            {
+                text: "Изменить пароль",
+                events: {
+                    click: () => {
+                        document
+                            .querySelector("section#account")
+                            ?.setAttribute("data-edit", "password");
+                    },
+                },
+            },
+            "li"
+        ),
+        new Link(
+            {
+                text: "Выйти",
+            },
+            "li"
+        ),
+    ],
+});
+
+export default AccountComponent;

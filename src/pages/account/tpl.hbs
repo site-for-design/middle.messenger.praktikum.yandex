@@ -1,9 +1,9 @@
-<section id="account">
+<section id="account" class="active">
     <div class="back" data-click="toggleAccountVisibility"></div>
     <div class="wrap">
         <div class="container">
             <div class="image">
-                <img src="img/noImage.svg" alt="Поменять аватар">
+                <img class="account-image" src="img/noImage.svg" alt="Поменять аватар">
                 <div class="change-image" data-click="changeAvatar">
                     Поменять <br>аватар
                 </div>
@@ -13,41 +13,41 @@
                 <ul>
                     <li>
                         <span>Почта</span>
-                        <input type="text" name="email" value="pochta@yandex.ru" disabled>
+                        <input type="text" name="email" value="pochta@yandex.ru">
                     </li>
                     <li>
                         <span>Логин</span>
-                        <input type="text" name="login" value="ivanivanov" disabled>
+                        <input type="text" name="login" value="ivanivanov">
                     </li>
                     <li>
                         <span>Имя</span>
-                        <input type="text" name="first_name" value="Иван" disabled>
+                        <input type="text" name="first_name" value="Иван">
                     </li>
                     <li>
                         <span>Фамилия</span>
-                        <input type="text" name="second_name" value="Иванов" disabled>
+                        <input type="text" name="second_name" value="Иванов">
                     </li>
                     <li>
                         <span>Имя в чате</span>
-                        <input type="text" name="display_name" value="Иван" disabled>
+                        <input type="text" name="display_name" value="Иван">
                     </li>
                     <li>
                         <span>Телефон</span>
-                        <input type="text" name="phone" value="+7 (909) 967 30 30" disabled>
+                        <input type="text" name="phone" value="+7 (909) 967 30 30">
                     </li>
                 </ul>
                 <ul class="password">
                     <li>
                         <span>Старый пароль</span>
-                        <input type="password" name="oldPassword" disabled>
+                        <input type="password" name="oldPassword">
                     </li>
                     <li>
                         <span>Новый пароль</span>
-                        <input type="password" name="newPassword" disabled>
+                        <input type="password" name="newPassword">
                     </li>
                     <li>
                         <span>Повторите новый пароль</span>
-                        <input type="password" name="newPassword_2" disabled>
+                        <input type="password" name="newPassword_2">
                     </li>
                 </ul>
                 <button class="btn">
@@ -55,15 +55,7 @@
                 </button>
             </form>
             <ul class="links">
-                <li>
-                    <div class="link" data-click="editUserInfo">Изменить данные</div>
-                </li>
-                <li>
-                    <div class="link" data-click="editPassword">Изменить пароль</div>
-                </li>
-                <li>
-                    <a href="/" class="link red">Выйти</a>
-                </li>
+                {{{links}}}
             </ul>
         </div>
     </div>
