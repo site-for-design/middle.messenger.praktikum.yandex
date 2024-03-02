@@ -2,9 +2,29 @@ import { v4 } from "uuid";
 import Handlebars from "handlebars";
 import EventBus from "./EventBus";
 
-type CreatedElement = HTMLElement | HTMLTemplateElement | DocumentFragment;
+type Events = Record<string, (e: Event | never) => void>;
+type ObjectT = Record<string, unknown>;
 
-type ObjectT = Record<string, string | Block | Block[]>;
+export type BlockProps = ObjectT & {
+    events?: Events;
+    attrs?: {
+        class?: string;
+    } & Record<string, string>;
+};
+
+export const setDefaultClassName = (
+    props: BlockProps,
+    className: string,
+    attrs?: BlockProps
+) => {
+    return Object.assign(props, {
+        attrs: {
+            ...props.attrs,
+            ...attrs,
+            class: [className, props?.attrs?.class].filter(Boolean).join(" "),
+        },
+    });
+};
 
 export default class Block {
     static EVENTS = {
@@ -14,47 +34,30 @@ export default class Block {
         FLOW_CDU: "flow:component-did-update",
     };
 
-    _meta: {
-        props: ObjectT;
-        tagName?: keyof HTMLElementTagNameMap;
-    };
-
-    props: ObjectT;
+    tagName: keyof HTMLElementTagNameMap;
+    props: BlockProps;
     children: ObjectT;
     lists: ObjectT;
-
-    eventBus: () => EventBus;
-    _element: CreatedElement;
+    eventBus: EventBus;
+    _element: HTMLElement;
     _id: string;
-    events?: ObjectT;
 
-    /** JSDoc
-     * @param {string} tagName
-     * @param {Object} props
-     *
-     * @returns {void}
-     */
-    constructor(propsAndChildren = {}, tagName?: keyof HTMLElementTagNameMap) {
-        const eventBus = new EventBus();
+    constructor(
+        propsAndChildren: BlockProps = {},
+        tagName: keyof HTMLElementTagNameMap = "div"
+    ) {
+        this.tagName = tagName;
         const { props, children, lists } = this._getChildren(propsAndChildren);
         this._id = v4();
 
         this.props = this._makeProxy({ ...props, _id: this._id });
+        this.children = this._makeProxy(children);
+        this.lists = this._makeProxy(lists);
 
-        this._meta = {
-            props,
-            tagName,
-        };
+        this.eventBus = new EventBus();
 
-        this.children = children;
-        this.lists = lists;
-        // this.children = this._makeProxy(children);
-        // this.lists = this._makeProxy(lists);
-
-        this.eventBus = () => eventBus;
-
-        this._registerEvents(eventBus);
-        eventBus.emit(Block.EVENTS.INIT);
+        this._registerEvents(this.eventBus);
+        this.eventBus.emit(Block.EVENTS.INIT);
     }
 
     get element() {
@@ -70,7 +73,7 @@ export default class Block {
 
     _getChildren(propsAndChildren: ObjectT) {
         const props: ObjectT = {};
-        const children: ObjectT = {};
+        const children: Record<string, Block> = {};
         const lists: ObjectT = {};
 
         Object.entries(propsAndChildren).forEach(([key, value]) => {
@@ -86,8 +89,8 @@ export default class Block {
         return { props, children, lists };
     }
 
-    compile(template: string, props: ObjectT): DocumentFragment {
-        const propsAndStubs = { ...props };
+    compile(template: string, props?: BlockProps) {
+        const propsAndStubs = props ? { ...props } : { ...this.props };
 
         Object.entries(this.children).forEach(
             ([key, child]: [string, Block]) => {
@@ -131,14 +134,24 @@ export default class Block {
         return fragment.content;
     }
 
+    setAttributes() {
+        if (this.props.attrs) {
+            Object.entries(this.props.attrs).forEach(
+                ([key, value]: [string, string]) => {
+                    this.element.setAttribute(key, value);
+                }
+            );
+        }
+    }
+
     _createResources() {
-        const { tagName } = this._meta;
-        this._element = this._createDocumentElement(tagName);
+        const el = this._createDocumentElement(this.tagName);
+        this._element = el;
     }
 
     init() {
         this._createResources();
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
     }
 
     _componentDidMount() {
@@ -153,55 +166,53 @@ export default class Block {
     componentDidMount() {}
 
     dispatchComponentDidMount() {
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+        this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps: unknown, newProps: unknown) {
+    _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
         const response = this.componentDidUpdate(oldProps, newProps);
         return response;
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidUpdate(oldProps: unknown, newProps: unknown) {
+    componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
         if (oldProps !== newProps) {
-            // this._render();
-            this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+            this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
             return true;
         }
 
         return false;
     }
 
-    setProps = (newProps: ObjectT) => {
+    setProps = (newProps: BlockProps) => {
         if (!newProps) {
             return;
         }
-        const { props, children, lists } = this._getChildren(
-            Object.assign(this.props, newProps)
-        );
+        const { props, children, lists } = this._getChildren(newProps);
 
         if (Object.values(props).length) {
-            Object.assign(this.props, props);
+            this.props = Object.assign(this.props, props);
         }
         if (Object.values(children).length) {
-            Object.assign(this.children, children);
+            this.children = Object.assign(this.children, children);
         }
         if (Object.values(lists).length) {
-            Object.assign(this.lists, lists);
+            this.lists = Object.assign(this.lists, lists);
         }
     };
 
     _render() {
-        const block = this.render(); // Render теперь возвращает DocumentFragment
-
+        const block = this.render();
         this._removeEvents();
-        // if (typeof this._element HTMLElement)
-        // const s = document.createDocumentFragment()
 
-        (this._element as HTMLElement).innerHTML = ""; // Удаляем предыдущее содержимое
-        // this._element.content = "";
+        if (this.tagName !== "img") {
+            this._element.innerHTML = "";
+            this._element.appendChild(block);
+        } else {
+            this._element = block as HTMLElement;
+        }
 
-        this._element.appendChild(block);
+        this.setAttributes();
 
         this._addEvents();
 
@@ -211,13 +222,14 @@ export default class Block {
     }
 
     // Может переопределять пользователь, необязательно трогать
-    render() {
-        return this.compile("", {});
+    render(): HTMLElement | DocumentFragment {
+        return this.compile("");
     }
 
+    removeEvents() {}
+
     _removeEvents() {
-        const { events }: { events?: { [key: string]: () => void } } =
-            this.props;
+        const { events } = this.props;
         if (events) {
             Object.keys(events).forEach((eventName) => {
                 this._element.removeEventListener(eventName, events[eventName]);
@@ -225,35 +237,35 @@ export default class Block {
         }
     }
 
+    addEvents() {}
+
     _addEvents() {
-        const { events }: { events?: { [key: string]: () => void } } =
-            this.props;
+        const { events = {} } = this.props;
         if (events) {
             Object.keys(events).forEach((eventName) => {
                 this._element.addEventListener(eventName, events[eventName]);
             });
         }
+
+        this.addEvents();
     }
 
     _makeProxy(props: ObjectT) {
-        const handleEventBus = (key: string | symbol, value: unknown) => {
-            this.eventBus().emit(Block.EVENTS.FLOW_CDU, [
-                this,
-                {
-                    ...this,
-                    [key]: value,
-                },
-            ]);
+        const handleEventBus = (oldValue: ObjectT, newValue: ObjectT) => {
+            this.eventBus.emit(Block.EVENTS.FLOW_CDU, [oldValue, newValue]);
         };
 
-        // Здесь необходимо правильно обновить пропсы так,
-        // чтобы ещё и сделать триггер на обновление компонента через emit.
-
         const proxy = new Proxy(props, {
-            set(target, prop, value) {
-                target[prop as string] = value;
+            get(target, prop: string) {
+                const value = target[prop];
+                return typeof value === "function" ? value.bind(target) : value;
+            },
+            set(target, prop: string, value) {
+                const oldValue: ObjectT = { ...target };
 
-                handleEventBus(prop, value);
+                target[prop] = value;
+
+                handleEventBus(oldValue, target);
 
                 return true;
             },
@@ -262,15 +274,8 @@ export default class Block {
         return proxy;
     }
 
-    _createDocumentElement(
-        tagName?: keyof HTMLElementTagNameMap
-    ): CreatedElement {
-        // Можно сделать метод, который через фрагменты в цикле
-        // создаёт сразу несколько блоков
-        // return document.createElement(tagName ?? "template");
-        return tagName
-            ? document.createElement(tagName ?? "template")
-            : document.createDocumentFragment();
+    _createDocumentElement(tagName?: keyof HTMLElementTagNameMap): HTMLElement {
+        return document.createElement(tagName ?? "div");
     }
 
     getContent() {

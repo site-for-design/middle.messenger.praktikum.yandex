@@ -1,0 +1,17 @@
+.file-wrap {
+    margin-top: 0;
+    cursor: pointer;
+    text-align: center;
+
+    input {
+        display: none;
+    }
+
+    .link {
+        text-decoration: underline;
+    }
+
+    .filename {
+        color: #8d8d8d;
+    }
+}

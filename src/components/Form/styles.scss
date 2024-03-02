@@ -13,10 +13,6 @@
         margin-bottom: 40px;
     }
 
-    .error-title {
-        color: $red-color;
-    }
-
     form {
         display: flex;
         flex-direction: column;
@@ -27,25 +23,13 @@
         margin-top: 14px;
     }
 
-    .file-wrap {
-        margin-top: 0;
-        cursor: pointer;
-        text-align: center;
-
-        input {
-            display: none;
-        }
-
-        .link {
-            text-decoration: underline;
-        }
-
-        .filename {
-            color: #8d8d8d;
-        }
-    }
-
     button {
         margin-top: 60px;
+    }
+
+    .error {
+        margin: 0 auto;
+        margin-top: 14px;
+        text-align: center;
     }
 }

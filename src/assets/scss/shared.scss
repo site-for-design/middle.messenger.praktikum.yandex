@@ -35,76 +35,12 @@ h3 {
     }
 }
 
-.link {
-    transition: 0.2s;
-    cursor: pointer;
-    font-size: 11px;
-    color: $primary-color;
-
-    &.red {
-        color: $red-color;
-
-        &:hover {
-            transition: 0.2s;
-            opacity: 0.8;
-        }
-    }
-
-    &:hover {
-        transition: 0.2s;
-        color: $dark-primary-color;
-    }
-}
-
 .title {
     font-size: 20px;
     width: 100%;
     text-align: center;
 }
 
-.modal {
-    transition: 0.4s;
-    opacity: 0;
-    visibility: hidden;
-    z-index: 4;
-    padding: 40px 30px;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-
-    .title {
-        font-size: 15px;
-    }
-
-    button {
-        margin-top: 16px;
-    }
-
-    &.active {
-        transition: 0.4s;
-        opacity: 1;
-        visibility: visible;
-    }
-}
-
-.overlay {
-    transition: 0.4s;
-    opacity: 0;
-    visibility: hidden;
-    z-index: 3;
-    cursor: pointer;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #000;
-
-    &.active {
-        transition: 0.4s;
-        opacity: 0.4;
-        visibility: visible;
-    }
+.red {
+    color: $red-color;
 }

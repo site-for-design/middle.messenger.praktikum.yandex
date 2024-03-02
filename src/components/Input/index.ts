@@ -1,21 +1,24 @@
-import Block from '../../services/Block';
-import tpl from './tpl.hbs?raw';
-import './styles.scss';
-
-// Type InputProps = {
-// 	type: string;
-// 	name: string;
-// 	isRequired: true;
-// 	text: string;
-// 	value?: string;
-// 	events?: Record<string, unknown>;
-// };
+import Block, { BlockProps, setDefaultClassName } from "../../services/Block";
+import tpl from "./tpl.hbs?raw";
+import "./styles.scss";
 
 export default class Input extends Block {
-	// ComponentDidUpdate(oldProps: any, newProps: any): boolean {
-	//     this.setProps()
-	// }
-	render() {
-		return this.compile(tpl, this.props);
-	}
+    constructor(props: BlockProps, tagName?: keyof HTMLElementTagNameMap) {
+        super(setDefaultClassName(props, "input-wrap"), tagName);
+    }
+
+    componentDidMount(): void {
+        if (this.props.onChange) {
+            this.element
+                .querySelector("input")
+                ?.addEventListener("blur", (e) => {
+                    (this.props.onChange as (e?: EventTarget) => void)(
+                        e.target ?? undefined
+                    );
+                });
+        }
+    }
+    render() {
+        return this.compile(tpl, this.props);
+    }
 }
