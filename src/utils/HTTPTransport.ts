@@ -90,8 +90,6 @@ export function fetchWithRetry(
                 if (i === 0) {
                     fetchLoop();
                 } else {
-                    console.log(e);
-
                     throw new Error(e);
                 }
             });

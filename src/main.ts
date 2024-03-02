@@ -1,25 +1,11 @@
 import Block from "./services/Block";
-import Button from "./components/Button";
 import LoginPage from "./pages/login";
 import RegistrationPage from "./pages/registration";
 import ChatPage from "./pages/chat";
 import ErrorPage from "./pages/error";
 import "./assets/scss/styles.scss";
 
-let i = 0;
-
-const btn = new Button({
-    text: "Регистрация",
-    events: {
-        click: () => {
-            console.log(btn);
-            btn.setProps({ text: `${btn.props.text}${i++}` });
-        },
-    },
-});
-
 const routes: Record<string, Block> = {
-    btn: btn,
     homepage: LoginPage,
     registration: RegistrationPage,
     chat: ChatPage,

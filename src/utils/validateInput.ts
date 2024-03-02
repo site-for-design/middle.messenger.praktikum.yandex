@@ -2,11 +2,10 @@ const ERROR_ELEM_CLASSNAME = "prompt";
 const VISIBLE_ERROR_CLASSNAME = "error";
 
 const validateInput = (
-    name: string,
     validateFc: (val?: string) => boolean,
-    errorText: string
+    errorText: string,
+    input?: HTMLInputElement
 ) => {
-    const input = <HTMLInputElement>document.querySelector(`[name="${name}"]`);
     const inputWrap = input?.parentElement;
 
     if (inputWrap?.getElementsByClassName(ERROR_ELEM_CLASSNAME).length === 0) {

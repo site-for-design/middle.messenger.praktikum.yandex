@@ -6,7 +6,6 @@ class EventBus {
     }
 
     on(event: string, callback: () => void) {
-        //Код здесь
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -14,7 +13,6 @@ class EventBus {
     }
 
     off(event: string, callback: () => void) {
-        //Код здесь
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }

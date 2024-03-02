@@ -103,6 +103,7 @@ section#account {
             li {
                 display: flex;
                 padding: 10px 0;
+                margin-bottom: 0;
                 border-bottom: 1px solid $bg-color;
 
                 :last-child {
@@ -114,14 +115,28 @@ section#account {
                     white-space: nowrap;
                 }
 
+                .label {
+                    order: -1;
+                    position: static;
+                }
+
                 input {
+                    padding: 0;
                     padding-left: 30px;
                     width: 100%;
                     text-align: right;
-                    color: $text-color;
+                    border-bottom: none;
 
                     &:disabled {
                         color: $light-text-color;
+                    }
+                }
+
+                &.error {
+                    border-color: $red-color;
+
+                    .prompt {
+                        display: none;
                     }
                 }
             }
@@ -130,12 +145,12 @@ section#account {
         .password {
             display: none;
         }
-    }
 
-    .btn {
-        margin: 0 auto;
-        margin-top: 40px;
-        display: none;
+        .btn {
+            margin: 0 auto;
+            margin-top: 40px;
+            display: none;
+        }
     }
 
     &.active {
@@ -146,42 +161,17 @@ section#account {
     }
 
     &[data-edit] {
+        .user-info {
+            pointer-events: initial;
+            opacity: 1;
+        }
+
         .links {
             display: none;
         }
 
         .btn {
             display: block;
-        }
-    }
-
-    &[data-edit="userInfo"] {
-        .user-info {
-            pointer-events: initial;
-            opacity: 1;
-
-            ul {
-                display: block;
-
-                &.password {
-                    display: none;
-                }
-            }
-        }
-    }
-
-    &[data-edit="password"] {
-        .user-info {
-            pointer-events: initial;
-            opacity: 1;
-
-            ul {
-                display: none;
-
-                &.password {
-                    display: block;
-                }
-            }
         }
     }
 }

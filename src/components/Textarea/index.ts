@@ -1,17 +1,13 @@
-import Block, { BlockProps, setDefaultClassName } from "../../services/Block";
+import Block from "../../services/Block";
 import tpl from "./tpl.hbs?raw";
 import "./styles.scss";
 
-export default class Input extends Block {
-    constructor(props: BlockProps, tagName?: keyof HTMLElementTagNameMap) {
-        super(setDefaultClassName(props, "input-wrap"), tagName);
-    }
-
+export default class Textarea extends Block {
     componentDidMount(): void {
         if (this.props.onChange) {
             this.element
-                .querySelector("input")
-                ?.addEventListener("blur", (e) => {
+                .querySelector("textarea")
+                ?.addEventListener("input", (e) => {
                     (this.props.onChange as (e?: EventTarget) => void)(
                         e.target ?? undefined
                     );
