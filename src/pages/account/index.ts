@@ -118,7 +118,7 @@ const defaultFieldsList = [
 ];
 
 const AccountPhotoComponent = new AccountPhoto({
-    avatar: currentUser.avatar,
+    avatar: currentUser?.avatar,
     events: {
         click: () => {
             ModalChangeAvatar.show();

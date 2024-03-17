@@ -46,7 +46,7 @@ const connectChatWS = async (
     currentChatId: StoreState["currentChatId"]
 ) => {
     try {
-        if (currentChatId) {
+        if (currentChatId && user) {
             await chatWS.connect(user.id, currentChatId);
 
             chatWS.socket.addEventListener(
@@ -120,8 +120,8 @@ const renderChat = (props: ChatProps) => {
         content: props.currentChatId
             ? [
                   new HeaderChat({
-                      name: props.user.display_name || null,
-                      avatar: props.user.avatar || null,
+                      name: props.user?.display_name || null,
+                      avatar: props.user?.avatar || null,
                       userActions: UserActionsDropdown,
                   }),
                   currentChat,
