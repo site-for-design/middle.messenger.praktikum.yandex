@@ -1,8 +1,8 @@
-import Block from "../../services/Block";
-import tpl from "./tpl.hbs?raw";
+import IndexPage from "./indexPage";
+import { Connect } from "../../services/Store";
 
-export default class Message extends Block {
-    render() {
-        return this.compile(tpl, this.props);
-    }
-}
+const Message = Connect(IndexPage, (state) => {
+    return { currentUserId: state.user.id };
+});
+
+export default Message;

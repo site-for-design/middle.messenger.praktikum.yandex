@@ -7,12 +7,9 @@ import Form from "../../components/Form";
 import Input from "../../components/Input";
 import Title from "../../components/Title";
 import "./styles.scss";
-
-class Registration extends Block {
-    render() {
-        return this.compile(tpl);
-    }
-}
+import { SignUpData, signUp } from "../../api/auth";
+import router from "../../services/Router/Router";
+import Link from "../../components/Link";
 
 const fields = [
     new Input(
@@ -21,11 +18,11 @@ const fields = [
             name: "email",
             isRequired: true,
             text: "Почта",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) => Boolean(val?.match(REGEX.EMAIL_REGEX)),
                     "Неверная почта",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
             attrs: {
@@ -40,11 +37,11 @@ const fields = [
             name: "login",
             isRequired: true,
             text: "Логин",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) => Boolean(val?.match(REGEX.LOGIN_REGEX)),
                     "Неверный логин",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
             attrs: {
@@ -59,11 +56,11 @@ const fields = [
             name: "first_name",
             isRequired: true,
             text: "Имя",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
                     "Неверное имя",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
 
@@ -79,11 +76,11 @@ const fields = [
             name: "second_name",
             isRequired: true,
             text: "Фамилия",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
                     "Неверная Фамилия",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
 
@@ -99,11 +96,11 @@ const fields = [
             name: "phone",
             isRequired: true,
             text: "Телефон",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) => Boolean(val?.match(REGEX.PHONE_REGEX)),
                     "Неверный телефон",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
 
@@ -119,11 +116,11 @@ const fields = [
             name: "password",
             isRequired: true,
             text: "Пароль",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) => Boolean(val?.match(REGEX.PASSWORD_REGEX)),
                     "Минимум 8 символов",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
 
@@ -139,7 +136,7 @@ const fields = [
             name: "password_2",
             isRequired: true,
             text: "Пароль",
-            onChange: (e: Event) => {
+            onChange: (target: EventTarget) => {
                 validateInput(
                     (val) =>
                         val ===
@@ -147,7 +144,7 @@ const fields = [
                             'input[name="password"]'
                         )?.value,
                     "Пароли не совпадают",
-                    e.target as HTMLInputElement
+                    target as HTMLInputElement
                 );
             },
 
@@ -159,104 +156,129 @@ const fields = [
     ),
 ];
 
-const RegistrationPage = new Registration(
-    {
-        form: new Form({
-            title: new Title({ text: "Регистрация" }, "h1"),
-            fields: fields,
-            button: new Button({
-                text: "Регистрация",
+const handleSubmit = async (e: Event) => {
+    e.preventDefault();
+
+    const isFormValid =
+        [
+            validateInput(
+                (val) => Boolean(val?.match(REGEX.EMAIL_REGEX)),
+                "Неверная почта",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="email"]`
+                ) as HTMLInputElement
+            ),
+            validateInput(
+                (val) => Boolean(val?.match(REGEX.LOGIN_REGEX)),
+                "Неверный логин",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="login"]`
+                ) as HTMLInputElement
+            ),
+            validateInput(
+                (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
+                "Неверное имя",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="first_name"]`
+                ) as HTMLInputElement
+            ),
+            validateInput(
+                (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
+                "Неверная Фамилия",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="second_name"]`
+                ) as HTMLInputElement
+            ),
+            validateInput(
+                (val) => Boolean(val?.match(REGEX.PHONE_REGEX)),
+                "Неверный телефон",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="phone"]`
+                ) as HTMLInputElement
+            ),
+            validateInput(
+                (val) => Boolean(val?.match(REGEX.PASSWORD_REGEX)),
+                "Минимум 8 символов",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="password"]`
+                ) as HTMLInputElement
+            ),
+            validateInput(
+                (val) =>
+                    val ===
+                    (
+                        (e.target as HTMLElement)?.querySelector(
+                            `[name="password"]`
+                        ) as HTMLInputElement
+                    )?.value,
+                "Пароли не совпадают",
+                (e.target as HTMLElement)?.querySelector(
+                    `[name="password_2"]`
+                ) as HTMLInputElement
+            ),
+        ].filter((val) => !val).length === 0;
+
+    if (isFormValid) {
+        const formData = new FormData(e?.target as HTMLFormElement);
+
+        const data = [
+            "first_name",
+            "second_name",
+            "login",
+            "email",
+            "phone",
+            "password",
+        ].reduce(
+            (acc, curr) => ({
+                ...acc,
+                [curr]: formData.get(curr) as string,
             }),
-            footer: '<a href="/" class="link">Войти?</a>',
-            events: {
-                submit: (e: Event) => {
-                    e.preventDefault();
+            {} as SignUpData
+        );
 
-                    const isFormValid =
-                        [
-                            validateInput(
-                                (val) => Boolean(val?.match(REGEX.EMAIL_REGEX)),
-                                "Неверная почта",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="email"]`
-                                ) as HTMLInputElement
-                            ),
-                            validateInput(
-                                (val) => Boolean(val?.match(REGEX.LOGIN_REGEX)),
-                                "Неверный логин",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="login"]`
-                                ) as HTMLInputElement
-                            ),
-                            validateInput(
-                                (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
-                                "Неверное имя",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="first_name"]`
-                                ) as HTMLInputElement
-                            ),
-                            validateInput(
-                                (val) => Boolean(val?.match(REGEX.NAME_REGEX)),
-                                "Неверная Фамилия",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="second_name"]`
-                                ) as HTMLInputElement
-                            ),
-                            validateInput(
-                                (val) => Boolean(val?.match(REGEX.PHONE_REGEX)),
-                                "Неверный телефон",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="phone"]`
-                                ) as HTMLInputElement
-                            ),
-                            validateInput(
-                                (val) =>
-                                    Boolean(val?.match(REGEX.PASSWORD_REGEX)),
-                                "Минимум 8 символов",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="password"]`
-                                ) as HTMLInputElement
-                            ),
-                            validateInput(
-                                (val) =>
-                                    val ===
-                                    (
-                                        (
-                                            e.target as HTMLElement
-                                        )?.querySelector(
-                                            `[name="password"]`
-                                        ) as HTMLInputElement
-                                    )?.value,
-                                "Пароли не совпадают",
-                                (e.target as HTMLElement)?.querySelector(
-                                    `[name="password_2"]`
-                                ) as HTMLInputElement
-                            ),
-                        ].filter((val) => !val).length === 0;
+        try {
+            await signUp(data);
+            router.go("/messenger");
+        } catch (e) {
+            console.error(e);
+        }
+    }
+};
 
-                    if (isFormValid) {
-                        alert("Вы успешно зарегестрированы!");
-                        const formData = new FormData(
-                            e?.target as HTMLFormElement
-                        );
-
-                        const data: { [key: string]: FormDataEntryValue } = {};
-                        formData.forEach((val, key) => {
-                            data[key] = val;
-                        });
-                        console.log(data);
-                    }
+class Registration extends Block {
+    constructor() {
+        super(
+            {
+                form: new Form({
+                    title: new Title({ text: "Регистрация" }, "h1"),
+                    fields: fields,
+                    button: new Button({
+                        text: "Регистрация",
+                    }),
+                    footer: new Link(
+                        {
+                            text: "Войти?",
+                            attrs: { href: "/" },
+                        },
+                        "a"
+                    ),
+                    events: {
+                        submit: handleSubmit,
+                    },
+                    attrs: {
+                        class: "form",
+                    },
+                }),
+                attrs: {
+                    id: "registration",
                 },
             },
-            attrs: {
-                class: "form",
-            },
-        }),
-        attrs: {
-            id: "registration",
-        },
-    },
-    "section"
-);
+            "section"
+        );
+    }
+    render() {
+        return this.compile(tpl);
+    }
+}
 
-export default RegistrationPage;
+export default Registration;

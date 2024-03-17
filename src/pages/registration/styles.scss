@@ -1,7 +1,10 @@
 section#registration {
- min-height: 100vh;
- padding: 30px 0;
- display: flex;
- flex-wrap: wrap;
- place-content: center center;
+    .container {
+        min-height: 100vh;
+        display: flex;
+        flex-wrap: wrap;
+        place-content: center center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
 }

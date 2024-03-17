@@ -64,14 +64,14 @@ export default class Block {
         return this._element;
     }
 
-    _registerEvents(eventBus: EventBus) {
+    private _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
 
-    _getChildren(propsAndChildren: ObjectT) {
+    private _getChildren(propsAndChildren: ObjectT) {
         const props: ObjectT = {};
         const children: Record<string, Block> = {};
         const lists: ObjectT = {};
@@ -79,7 +79,11 @@ export default class Block {
         Object.entries(propsAndChildren).forEach(([key, value]) => {
             if (value instanceof Block) {
                 children[key] = value;
-            } else if (Array.isArray(value)) {
+            } else if (
+                Array.isArray(value) &&
+                value.find((val) => val instanceof Block)
+            ) {
+                // если массив пустой то он пойдет в пропсы, по этому надо оборачивать в Unit пустой список компонентов
                 lists[key] = value;
             } else {
                 props[key] = value;
@@ -101,7 +105,7 @@ export default class Block {
             propsAndStubs[key] = `<div data-id="${key}"></div>`;
         });
 
-        const fragment = this._createDocumentElement(
+        const fragment = this.createDocumentElement(
             "template"
         ) as HTMLTemplateElement;
 
@@ -122,7 +126,7 @@ export default class Block {
                 return;
             }
 
-            const listContent = this._createDocumentElement(
+            const listContent = this.createDocumentElement(
                 "template"
             ) as HTMLTemplateElement;
             item.forEach((item) => {
@@ -144,17 +148,29 @@ export default class Block {
         }
     }
 
-    _createResources() {
-        const el = this._createDocumentElement(this.tagName);
+    private _createResources() {
+        const el = this.createDocumentElement(this.tagName);
         this._element = el;
     }
 
     init() {
         this._createResources();
         this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+
+        setTimeout(() => {
+            this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+        });
     }
 
-    _componentDidMount() {
+    refresh() {
+        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+
+        setTimeout(() => {
+            this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+        });
+    }
+
+    private _componentDidMount() {
         this.componentDidMount();
 
         Object.values(this.children).forEach((child: Block) => {
@@ -162,27 +178,24 @@ export default class Block {
         });
     }
 
-    // Может переопределять пользователь, необязательно трогать
     componentDidMount() {}
 
-    dispatchComponentDidMount() {
+    private dispatchComponentDidMount() {
         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
-        const response = this.componentDidUpdate(oldProps, newProps);
-        return response;
-    }
-
-    // Может переопределять пользователь, необязательно трогать
-    componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+    private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
         if (oldProps !== newProps) {
+            this.componentDidUpdate();
             this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
             return true;
         }
 
         return false;
     }
+
+    // Может переопределять пользователь, необязательно трогать
+    componentDidUpdate() {}
 
     setProps = (newProps: BlockProps) => {
         if (!newProps) {
@@ -201,7 +214,7 @@ export default class Block {
         }
     };
 
-    _render() {
+    private _render() {
         const block = this.render();
         this._removeEvents();
 
@@ -215,10 +228,6 @@ export default class Block {
         this.setAttributes();
 
         this._addEvents();
-
-        setTimeout(() => {
-            this.dispatchComponentDidMount();
-        });
     }
 
     // Может переопределять пользователь, необязательно трогать
@@ -228,7 +237,7 @@ export default class Block {
 
     removeEvents() {}
 
-    _removeEvents() {
+    private _removeEvents() {
         const { events } = this.props;
         if (events) {
             Object.keys(events).forEach((eventName) => {
@@ -239,7 +248,7 @@ export default class Block {
 
     addEvents() {}
 
-    _addEvents() {
+    private _addEvents() {
         const { events = {} } = this.props;
         if (events) {
             Object.keys(events).forEach((eventName) => {
@@ -250,7 +259,7 @@ export default class Block {
         this.addEvents();
     }
 
-    _makeProxy(props: ObjectT) {
+    private _makeProxy(props: ObjectT) {
         const handleEventBus = (oldValue: ObjectT, newValue: ObjectT) => {
             this.eventBus.emit(Block.EVENTS.FLOW_CDU, [oldValue, newValue]);
         };
@@ -274,11 +283,19 @@ export default class Block {
         return proxy;
     }
 
-    _createDocumentElement(tagName?: keyof HTMLElementTagNameMap): HTMLElement {
+    createDocumentElement(tagName?: keyof HTMLElementTagNameMap): HTMLElement {
         return document.createElement(tagName ?? "div");
     }
 
     getContent() {
         return this.element;
+    }
+
+    show() {
+        this.element.style.display = "block";
+    }
+
+    hide() {
+        this.element.style.display = "none";
     }
 }

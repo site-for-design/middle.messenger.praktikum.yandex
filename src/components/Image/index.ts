@@ -5,6 +5,6 @@ export default class Image extends Block {
         super(props, "img");
     }
     render() {
-        return this._createDocumentElement("img");
+        return this.createDocumentElement("img");
     }
 }

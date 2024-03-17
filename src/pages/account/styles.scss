@@ -36,47 +36,6 @@ section#account {
         align-items: center;
     }
 
-    .image {
-        cursor: pointer;
-        position: relative;
-        margin-bottom: 20px;
-        border-radius: 50%;
-        overflow: hidden;
-
-        .account-image {
-            width: 130px;
-            height: 130px;
-            object-fit: cover;
-            object-position: center;
-        }
-
-        .change-image {
-            transition: 0.4s;
-            opacity: 0;
-            visibility: hidden;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 13px;
-            color: #fff;
-        }
-
-        &:hover {
-            .change-image {
-                transition: 0.4s;
-                opacity: 0.5;
-                visibility: visible;
-            }
-        }
-    }
-
     .links {
         width: 100%;
         margin-top: 40px;

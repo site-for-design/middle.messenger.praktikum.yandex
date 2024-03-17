@@ -57,6 +57,10 @@ textarea {
     white-space: revert;
 }
 
+select {
+    appearance: none;
+}
+
 /* minimum style to allow to style meter element */
 meter {
     appearance: revert;
