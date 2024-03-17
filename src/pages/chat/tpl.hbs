@@ -1,7 +1,7 @@
 <section id="chat">
     <div class="sidebar">
         <div class="head">
-            <span class="profile" data-click="toggleAccountVisibility">Профиль</span>
+            {{{accountBtn}}}
             <form class="search">
                 <input type="text" required>
                 <span>Поиск</span>
@@ -9,23 +9,12 @@
         </div>
         <div class="content">
             <ul class="chat-list">
-                {{#each chatList}}
-                    <li class="chat-list__item">
-                        <div class="image no-image"></div>
-                        <div class="text">
-                            <h4>{{name}}</h4>
-                            <div class="message">
-                                {{message}}
-                            </div>
-                        </div>
-                        <div class="time">{{date}}</div>
-                        <div class="messages-count">{{countMessages}}</div>
-                    </li>
-                {{/each}}
+                {{{chatList}}}
             </ul>
         </div>
     </div>
     <div class="main">
+        {{!-- TODO: Add when api will be ready --}}
         <!-- <div class="empty">
             <h3>Выберите чат чтобы отправить сообщение</h3>
         </div> -->
@@ -35,37 +24,11 @@
                     <div class="image no-image"></div>
                     Вадим
                 </div>
-                <div class="dropdown">
-                    <div class="dropdown__icon">
-                        <img src="img/actions.svg" alt="Добавить/Удалить пользователя">
-                    </div>
-                    <div class="dropdown__block">
-                        <ul>
-                            <li data-click="addUser">
-                                <img src="img/add.svg" alt="Добавить пользователя">
-                                Добавить пользователя
-                            </li>
-                            <li data-click="removeUser">
-                                <img src="img/remove.svg" alt="Удалить пользователя">
-                                Удалить пользователя
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                {{{userActions}}}
             </div>
             <div class="body">
                 <div class="day">
-                    {{#each currentChat}}
-                        {{!-- TODO: paste date here --}}
-                        {{!-- <div class="date">19 июня</div> --}}
-                        {{!-- {{{date}}} --}}
-                        <div class="message {{userId}}{{#if checked}} checked{{/if}}">
-                            <div class="content">
-                                {{{message}}}
-                            </div>
-                            <div class="time">{{date}}</div>
-                        </div>
-                    {{/each}}
+                    {{{currentChat}}}
                 </div>
             </div>
             <form class="footer">
@@ -108,14 +71,17 @@
                     </div>
                 </div>
                 <div class="type-text">
-                    <textarea name="message" placeholder="Сообщение"></textarea>
+                    {{{textMessage}}}
                 </div>
                 <button type="submit" class="submit"></button>
             </form>
         </div>
     </div>
 </section>
-<div class="modal form add-user">
+{{{account}}}
+
+{{{modals}}}
+{{!-- <div class="modal form add-user">
     <h3 class="title">Добавить пользователя</h3>
     <form>
         <label class="input-wrap">
@@ -134,17 +100,4 @@
         </label>
         <button type="submit" class="btn">Удалить</button>
     </form>
-</div>
-<div class="modal form change-avatar">
-    <h3 class="title">Загрузите файл</h3>
-    <h3 class="title error-title" style="display: none;">Ошибка, попробуйте ещё раз</h3>
-    <form>
-        <label class="file-wrap">
-            <input type="file" name="avatar" accept="image/*">
-            <span class="label link">Выбрать файл на <br>компьютере</span>
-            <span class="filename"></span>
-        </label>
-        <div class="error" style="display: none;">Нужно выбрать файл</div>
-        <button type="submit" class="btn">Поменять</button>
-    </form>
-</div>
+</div> --}}

@@ -7,17 +7,31 @@
     "node": "21.1.0"
   },
   "scripts": {
-    "start": "vite build & node server.js",
+    "start": "npm run build && node server.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
+    "eslint": "^8.57.0",
+    "eslint-config-xo": "^0.44.0",
+    "eslint-config-xo-typescript": "^3.0.0",
+    "sass": "^1.71.1",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard-scss": "^13.0.0",
+    "typescript": "^5.3.3",
     "vite": "^5.1.0"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.8",
     "express": "^4.18.2",
+    "uuid": "^9.0.1",
     "vite-express": "^0.15.0",
-    "vite-plugin-handlebars": "^2.0.0"
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-handlebars": "^2.0.0",
+    "vite-plugin-stylelint": "^5.3.1"
   }
 }

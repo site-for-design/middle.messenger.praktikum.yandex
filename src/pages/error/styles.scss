@@ -1,6 +1,7 @@
 section#error {
  min-height: 100vh;
  display: flex;
+
  .container {
   min-height: 100%;
   padding-top: 50px;
@@ -9,15 +10,18 @@ section#error {
   align-items: center;
   justify-content: center;
  }
+
  h1 {
   font-size: 40px;
   line-height: 40px;
   text-align: center;
  }
+
  h3 {
   margin-top: 20px;
   font-size: 20px;
  }
+
  .link {
   margin-top: 70px;
  }
