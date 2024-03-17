@@ -2,7 +2,7 @@ import { User } from "../../api/types";
 import EventBus from "../EventBus";
 
 export type StoreState = {
-    user: User;
+    user: User | null;
     currentChatId: number | null;
 };
 
@@ -11,7 +11,7 @@ export default class Store extends EventBus {
     static _instance: Store;
     static STORE_NAME: "messenger";
 
-    private _state: StoreState = { user: {} as User, currentChatId: null };
+    private _state: StoreState = { user: null, currentChatId: null };
     constructor() {
         if (Store._instance) {
             return Store._instance;
