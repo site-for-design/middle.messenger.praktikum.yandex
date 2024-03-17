@@ -15,9 +15,9 @@ const validateInput = (
         inputWrap?.appendChild(errorElem);
     }
 
-    if (validateFc(input?.value)) {
+    if (input?.value && validateFc(input?.value)) {
         inputWrap?.classList.remove(VISIBLE_ERROR_CLASSNAME);
-        return true;
+        return input.value;
     } else {
         inputWrap?.classList.add(VISIBLE_ERROR_CLASSNAME);
         return false;

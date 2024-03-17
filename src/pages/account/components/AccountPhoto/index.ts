@@ -1,15 +1,18 @@
 import Block, { BlockProps } from "../../../../services/Block";
 import tpl from "./tpl.hbs?raw";
 import "./styles.scss";
+import { RESOURCES_URL } from "../../../../api/HTTPTransportYaPraktikum";
 
 export default class AccountPhoto extends Block {
     constructor(props: BlockProps) {
         super(
             {
                 ...props,
-                src: "img/noImage.svg",
+                avatar: props.avatar
+                    ? `${RESOURCES_URL}${props.avatar}`
+                    : "img/noImage.svg",
                 attrs: {
-                    class: "image",
+                    class: "user-avatar",
                 },
             },
             "div"
