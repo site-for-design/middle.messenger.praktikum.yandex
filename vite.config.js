@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import eslint from "vite-plugin-eslint";
 import stylelint from "vite-plugin-stylelint";
-import autoprefixer from "autoprefixer";
 
 export default defineConfig({
     root: "src",
@@ -21,7 +20,6 @@ export default defineConfig({
         stylelint({
             fix: true,
         }),
-        autoprefixer({}),
     ],
     css: {
         preprocessorOptions: {
