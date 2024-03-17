@@ -1,0 +1,7 @@
+{{#if text}}<span class="label">{{text}}</span>{{/if}}
+<select name="{{name}}" {{#if value}}value="{{value}}"{{/if}}>
+    {{#each options}}
+        <option value="{{value}}">{{text}}</option>
+    {{/each}}
+</select>
+{{{error}}}
