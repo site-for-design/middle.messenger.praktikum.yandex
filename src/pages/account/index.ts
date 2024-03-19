@@ -19,7 +19,7 @@ import { User } from "../../api/types";
 import "./styles.scss";
 import Title from "../../components/Title";
 import router from "../../services/Router/Router";
-import { Store } from "../../services/Store";
+import { Store, setCurrentUser } from "../../services/Store";
 
 const store = new Store();
 
@@ -127,6 +127,8 @@ const AccountPhotoComponent = new AccountPhoto({
 });
 
 const setAccountProps = async (userInfo: User) => {
+    setCurrentUser(userInfo);
+
     defaultFieldsList.forEach((field) => {
         field.setProps({ value: userInfo[field.props.name as keyof User] });
     });
@@ -271,6 +273,8 @@ const handleFormAccountSubmit = async (e: Event) => {
 
         try {
             const res = await changeUserProfile(data);
+            console.log(res);
+
             setAccountProps(res);
         } catch (e) {
             console.error(e);

@@ -1,17 +1,25 @@
-import { User } from "../../api/types";
+import { Chat } from "../../api/chats";
+import { Message, User } from "../../api/types";
 import EventBus from "../EventBus";
 
 export type StoreState = {
     user: User | null;
     currentChatId: number | null;
+    currentChat: { messages: Message[] };
+    chatList: Chat[];
 };
 
-export default class Store extends EventBus {
+export class Store extends EventBus {
     static EVENT_UPDATE = "1";
     static _instance: Store;
     static STORE_NAME: "messenger";
 
-    private _state: StoreState = { user: null, currentChatId: null };
+    private _state: StoreState = {
+        user: null,
+        currentChatId: null,
+        currentChat: { messages: [] },
+        chatList: [],
+    };
     constructor() {
         if (Store._instance) {
             return Store._instance;

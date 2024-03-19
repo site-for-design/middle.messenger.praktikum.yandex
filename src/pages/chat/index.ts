@@ -1,7 +1,5 @@
 import IndexPage from "./indexPage";
 import { Connect } from "../../services/Store";
 
-const Page = Connect(IndexPage, (state) => {
-    return state;
-});
+const Page = Connect(IndexPage);
 export default Page;

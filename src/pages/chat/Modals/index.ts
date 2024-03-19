@@ -1,10 +1,5 @@
 import * as REGEX from "../../../constants/constants";
-import {
-    addChatUsers,
-    createChat,
-    deleteChatUsers,
-    getChatUsers,
-} from "../../../api/chats";
+import { addChatUsers, createChat, getChats } from "../../../api/chats";
 import { getUserByLogin } from "../../../api/users";
 import Button from "../../../components/Button";
 import Form from "../../../components/Form";
@@ -12,9 +7,9 @@ import Input from "../../../components/Input";
 import Modal from "../../../components/Modal";
 import Title from "../../../components/Title";
 import validateInput from "../../../utils/validateInput";
-import Select from "../../../components/Select";
-import router from "../../../services/Router/Router";
 import { Store } from "../../../services/Store";
+import ModalRemoveUserWithStore from "./ModalRemoveUser";
+import { setChatList } from "../../../services/Store/Actions";
 
 const store = new Store();
 
@@ -82,71 +77,7 @@ export const modalAddUser = () => {
 };
 
 export const modalRemoveUser = () => {
-    const currentChatId = store.getStateEl("currentChatId");
-    const currentUser = store.getStateEl("user");
-    const form = new Form({
-        fields: [],
-        events: {
-            submit: async (e: Event) => {
-                e.preventDefault();
-
-                const userId = new FormData(e.target as HTMLFormElement).get(
-                    "userId"
-                );
-
-                if (userId && currentChatId) {
-                    try {
-                        const res = await deleteChatUsers({
-                            users: [Number(userId)],
-                            chatId: Number(currentChatId),
-                        });
-                        if (res === "OK") {
-                            modal.hide();
-                            alert("Пользователь удален");
-                        }
-                    } catch (e) {
-                        console.error(e);
-                    }
-                } else {
-                    alert("Такого пользователя не существует");
-                }
-            },
-        },
-        button: new Button({
-            text: "Удалить",
-        }),
-    });
-    const modal = new Modal({
-        content: [new Title({ text: "Удалить пользователя" }, "h3"), form],
-    });
-
-    modal.componentDidMount = async () => {
-        try {
-            if (currentChatId) {
-                const users = await getChatUsers(currentChatId);
-
-                form.setProps({
-                    fields: [
-                        new Select({
-                            name: "userId",
-                            isRequired: true,
-                            text: "Пользователь",
-                            options: users
-                                .filter((item) => item.id !== currentUser?.id)
-                                .map((item) => ({
-                                    value: item.id,
-                                    text: item.login,
-                                })),
-                        }),
-                    ],
-                });
-            }
-        } catch (e) {
-            if (e.reason === "No chat") {
-                router.go("/messenger");
-            }
-        }
-    };
+    const modal = new ModalRemoveUserWithStore();
     return modal;
 };
 
@@ -169,11 +100,13 @@ export const modalCreateChat = () => {
                 const formData = new FormData(e?.target as HTMLFormElement);
 
                 const data = {
-                    title: formData.get("title"),
+                    title: formData.get("title") as string,
                 };
 
                 try {
                     await createChat(data);
+                    const chats = await getChats();
+                    setChatList(chats);
 
                     modal.hide();
                 } catch (e) {

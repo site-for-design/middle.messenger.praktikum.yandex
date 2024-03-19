@@ -10,6 +10,10 @@ import "./styles.scss";
 import { SignUpData, signUp } from "../../api/auth";
 import router from "../../services/Router/Router";
 import Link from "../../components/Link";
+import { Store } from "../../services/Store";
+import { log } from "console";
+
+const store = new Store();
 
 const fields = [
     new Input(
@@ -237,7 +241,9 @@ const handleSubmit = async (e: Event) => {
         );
 
         try {
-            await signUp(data);
+            const user = await signUp(data);
+            console.log(user);
+
             router.go("/messenger");
         } catch (e) {
             console.error(e);

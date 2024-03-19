@@ -11,7 +11,7 @@ export default class InputFile extends Block {
         super(setDefaultClassName(props, "file-wrap"), tagName);
     }
 
-    componentDidMount(): void {
+    addEvents(): void {
         if (this.props.onChange) {
             this.element
                 .querySelector("input")

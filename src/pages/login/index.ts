@@ -8,13 +8,9 @@ import Input from "../../components/Input";
 import Link from "../../components/Link";
 import Title from "../../components/Title";
 import "./styles.scss";
-import { SignInData, signIn } from "../../api/auth";
+import { SignInData, getUserInfo, signIn } from "../../api/auth";
 import router from "../../services/Router/Router";
-
-const mockCredentials = {
-    login: "login",
-    password: "Password1",
-};
+import { setCurrentUser } from "../../services/Store";
 
 const fields = [
     new Input(
@@ -25,9 +21,7 @@ const fields = [
             text: "Логин",
             onChange: (e: Event) => {
                 validateInput(
-                    (val) =>
-                        val === mockCredentials.login &&
-                        Boolean(val?.match(REGEX.LOGIN_REGEX)),
+                    (val) => Boolean(val?.match(REGEX.LOGIN_REGEX)),
                     "Неверный логин",
                     e.target as HTMLInputElement
                 );
@@ -46,9 +40,7 @@ const fields = [
             text: "Пароль",
             onChange: (e: Event) => {
                 validateInput(
-                    (val) =>
-                        val === mockCredentials.password &&
-                        Boolean(val?.match(REGEX.PASSWORD_REGEX)),
+                    (val) => Boolean(val?.match(REGEX.PASSWORD_REGEX)),
                     "Неверный пароль",
                     e.target as HTMLInputElement
                 );
@@ -123,6 +115,10 @@ class Login extends Block {
 
                                 try {
                                     await signIn(data);
+                                    const user = await getUserInfo();
+
+                                    setCurrentUser(user);
+
                                     router.go("/messenger");
                                 } catch (e) {
                                     console.error(e);

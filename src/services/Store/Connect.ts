@@ -1,25 +1,28 @@
 import Block, { BlockProps } from "../Block";
-import Store, { StoreState } from "./Store";
+import { Store, StoreState } from "./Store";
 
-const Connect = (
+export type BlockPropsWithStore = BlockProps & Partial<StoreState>;
+
+export const Connect = (
     Component: typeof Block,
-    mapStateToProps: (state: StoreState) => Record<string, unknown>
+    mapStateToProps?: (state: StoreState) => Record<string, unknown>
 ) => {
     return class extends Component {
         constructor(
-            propsAndChildren: BlockProps = {},
+            propsAndChildren: BlockPropsWithStore = {},
             tagName?: keyof HTMLElementTagNameMap
         ) {
             const store = new Store();
-            super(
-                { ...propsAndChildren, ...mapStateToProps(store.getState()) },
-                tagName
-            );
+            const props = mapStateToProps
+                ? mapStateToProps(store.getState())
+                : store.getState();
+            console.log(props);
+
+            super({ ...propsAndChildren, ...props }, tagName);
 
             store.on(Store.EVENT_UPDATE, () => {
-                this.setProps({ ...mapStateToProps(store.getState()) });
+                this.setProps({ ...props });
             });
         }
     };
 };
-export default Connect;

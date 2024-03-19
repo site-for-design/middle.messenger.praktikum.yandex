@@ -12,33 +12,53 @@ import AttachFileDropdown from "./AttachFileDropdown";
 import Message from "../../components/Message";
 import router from "../../services/Router/Router";
 import HeaderChat from "./HeaderChat";
-import { Store } from "../../services/Store";
+import { Store, setCurrentChat } from "../../services/Store";
 import UserActionsDropdown from "./UserActionsDropdown";
 import convertDate from "../../utils/convertDate";
 import { StoreState } from "../../services/Store/Store";
 import { setCurrentChatId } from "../../services/Store";
+import ChatListModel from "./Models/ChatListModel";
+import CurrentChat from "./CurrentChat";
+import { Message as MessageT } from "../../api/types";
 
-type ChatProps = StoreState;
+type ChatProps = any;
 
-let timeout: ReturnType<typeof setTimeout>;
-
+let prevDate: string | null = null;
 const chatWS = new ChatWS();
 const store = new Store();
 
-const currentChat = new Unit({
-    content: [],
-    attrs: { class: "body" },
-    events: {
-        scroll: async () => {
-            const nearBottom = currentChat._element.scrollTop < 500;
-            if (nearBottom) {
-                clearTimeout(timeout);
-                timeout = setTimeout(function () {
-                    chatWS.getOldMessages();
-                }, 200);
-            }
-        },
-    },
+const chatListModel = new ChatListModel();
+chatListModel.setChatsList();
+
+const renderMessages = (messages: MessageT[]) => {
+    return messages
+        .map((item) => {
+            const currentMessageDate = convertDate(item.time).dayMonth;
+
+            const result =
+                prevDate === currentMessageDate
+                    ? new Message({
+                          message: item,
+                      })
+                    : [
+                          new Unit({
+                              content: currentMessageDate,
+                              attrs: { class: "date" },
+                          }),
+                          new Message({
+                              message: item,
+                          }),
+                      ];
+            prevDate = currentMessageDate;
+            return result;
+        })
+        .flat();
+};
+
+const currentChat = new CurrentChat({
+    content: store.getStateEl("currentChat")?.messages
+        ? renderMessages(store.getStateEl("currentChat").messages)
+        : [],
 });
 
 const connectChatWS = async (
@@ -58,40 +78,13 @@ const connectChatWS = async (
                         chatWS.messages = Array.isArray(data)
                             ? [...data.reverse(), ...chatWS.messages]
                             : [...chatWS.messages, data];
-
-                        let prevDate: string | null = null;
-
-                        const messagesContent = chatWS.messages
-                            .map((item) => {
-                                const currentMessageDate = convertDate(
-                                    item.time
-                                ).dayMonth;
-
-                                const result =
-                                    prevDate === currentMessageDate
-                                        ? new Message({
-                                              message: item,
-                                          })
-                                        : [
-                                              new Unit({
-                                                  content: currentMessageDate,
-                                                  attrs: { class: "date" },
-                                              }),
-                                              new Message({
-                                                  message: item,
-                                              }),
-                                          ];
-                                prevDate = currentMessageDate;
-                                return result;
-                            })
-                            .flat();
-
-                        currentChat.setProps({
-                            content:
-                                messagesContent.length > 0
-                                    ? new Unit({ content: messagesContent })
-                                    : new Unit({ content: "" }),
-                        });
+                        setCurrentChat({ messages: chatWS.messages });
+                        // currentChat.setProps({
+                        //     content:
+                        //         chatWS.messages.length > 0
+                        //             ? renderMessages(chatWS.messages)
+                        //             : new Unit({ content: "" }),
+                        // });
 
                         if (chatWS.messages.length <= MESSAGES_OFFSET) {
                             currentChat._element.scrollTop =
@@ -210,6 +203,8 @@ const renderChat = (props: ChatProps) => {
     });
 };
 
+const chatList = new Unit();
+
 class Chat extends Block {
     constructor(props: ChatProps) {
         super(
@@ -238,6 +233,7 @@ class Chat extends Block {
                         },
                     }),
                 ],
+                chatList: chatList,
                 chat: renderChat(props),
                 modals: [
                     instanceModalAddUser,
@@ -288,6 +284,8 @@ class Chat extends Block {
                                                         .user as ChatProps["user"],
                                                     currentChatId: this.props
                                                         .currentChatId as ChatProps["currentChatId"],
+                                                    currentChat: this.props
+                                                        .currentChat as ChatProps["currentChat"],
                                                 }),
                                             });
 

@@ -22,6 +22,7 @@ const InputFileModal = new InputFile(
 
                 const target = e.target as HTMLInputElement;
                 const files = target?.files;
+                formChangeAvatar.setProps({ file: files?.[0] });
 
                 TitleModal.setProps({
                     text: "Файл загружен",
@@ -54,9 +55,12 @@ const formChangeAvatar = new Form({
         text: "Сохранить",
     }),
     events: {
-        submit: async (e: Event) => {
+        submit: async (e: SubmitEvent) => {
             e.preventDefault();
-            const formData = new FormData(e?.target as HTMLFormElement);
+            const formData = new FormData();
+            if (formChangeAvatar.props.file) {
+                formData.append("avatar", formChangeAvatar.props.file as Blob);
+            }
 
             try {
                 await changeUserAvatar(formData);
@@ -74,6 +78,9 @@ const formChangeAvatar = new Form({
                     text: DEFAULT_INPUT_FILE_TEXT,
                 });
             } catch (e) {
+                TitleModal.setProps({
+                    text: "Файл не загружен",
+                });
                 formChangeAvatar.setProps({
                     footer: new Unit(
                         {
@@ -85,6 +92,9 @@ const formChangeAvatar = new Form({
                 });
             }
         },
+    },
+    attrs: {
+        enctype: "multipart/form-data",
     },
 });
 
