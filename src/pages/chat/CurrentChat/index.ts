@@ -32,9 +32,11 @@ const renderMessages = (messages: MessageT[]) => {
         .flat();
 };
 
-const Page = Connect(IndexPage, (state) => {
+const CurrentChat = Connect(IndexPage, (state) => {
     return {
-        currentChat: renderMessages(state.currentChat.messages),
+        content: new Unit({
+            content: renderMessages(state.currentChatMessages),
+        }),
     };
 });
-export default Page;
+export default CurrentChat;

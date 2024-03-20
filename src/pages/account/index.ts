@@ -14,16 +14,15 @@ import {
     changeUserPassword,
     changeUserProfile,
 } from "../../api/users";
-import { getUserInfo, logOut } from "../../api/auth";
+import { logOut } from "../../api/auth";
 import { User } from "../../api/types";
 import "./styles.scss";
 import Title from "../../components/Title";
 import router from "../../services/Router/Router";
-import { Store, setCurrentUser } from "../../services/Store";
-
-const store = new Store();
+import { store, setCurrentUser } from "../../services/Store";
 
 const currentUser = store.getStateEl("user");
+const formAccountInfoTitle = new Title({ text: "" }, "h2");
 
 const defaultFieldsList = [
     new Input(
@@ -118,7 +117,6 @@ const defaultFieldsList = [
 ];
 
 const AccountPhotoComponent = new AccountPhoto({
-    avatar: currentUser?.avatar,
     events: {
         click: () => {
             ModalChangeAvatar.show();
@@ -136,14 +134,9 @@ const setAccountProps = async (userInfo: User) => {
     formAccountInfoTitle.setProps({ text: userInfo.display_name });
 };
 
-const setInitialUserInfo = async () => {
-    try {
-        const res = await getUserInfo();
-        setAccountProps(res);
-    } catch (e) {
-        console.error(e);
-    }
-};
+if (currentUser) {
+    setAccountProps(currentUser);
+}
 
 const passwordContent = [
     new Input(
@@ -201,7 +194,6 @@ const passwordContent = [
 ];
 
 const defaultFields = new Unit({ content: defaultFieldsList }, "ul");
-setInitialUserInfo();
 
 const passwordFields = new Unit(
     {
@@ -273,8 +265,6 @@ const handleFormAccountSubmit = async (e: Event) => {
 
         try {
             const res = await changeUserProfile(data);
-            console.log(res);
-
             setAccountProps(res);
         } catch (e) {
             console.error(e);
@@ -346,8 +336,6 @@ const handleFormAccountSubmit = async (e: Event) => {
     }
 };
 
-const formAccountInfoTitle = new Title({ text: "" }, "h2");
-
 const formAccountInfo = new Form({
     title: formAccountInfoTitle,
     fields: defaultFields,
@@ -359,6 +347,16 @@ const formAccountInfo = new Form({
         submit: handleFormAccountSubmit,
     },
 });
+
+const handleLogOut = async () => {
+    try {
+        await logOut();
+        store.removeState();
+        router.go("/");
+    } catch (e) {
+        console.error(e);
+    }
+};
 
 export default class Account extends Block {
     constructor() {
@@ -422,14 +420,7 @@ export default class Account extends Block {
                                 {
                                     text: "Выйти",
                                     events: {
-                                        click: async () => {
-                                            try {
-                                                await logOut();
-                                                router.go("/");
-                                            } catch (e) {
-                                                console.error(e);
-                                            }
-                                        },
+                                        click: handleLogOut,
                                     },
                                     attrs: {
                                         class: "red",

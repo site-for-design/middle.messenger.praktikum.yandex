@@ -1,6 +1,6 @@
 import Indexed from "./types/indexed";
 
-export default function merge(lhs: Indexed, rhs: Indexed): Indexed {
+export default function merge<T extends Indexed>(lhs: T, rhs: T): T {
     for (const p in rhs) {
         if (!rhs.hasOwnProperty(p)) {
             continue;
@@ -8,7 +8,7 @@ export default function merge(lhs: Indexed, rhs: Indexed): Indexed {
 
         try {
             if (rhs[p]?.constructor === Object) {
-                rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
+                (rhs[p] as T) = merge(lhs[p] as T, rhs[p] as T);
             } else {
                 lhs[p] = rhs[p];
             }

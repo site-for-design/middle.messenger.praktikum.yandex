@@ -122,6 +122,7 @@ class Login extends Block {
                                     router.go("/messenger");
                                 } catch (e) {
                                     console.error(e);
+                                    alert(e.reason);
                                 }
                             }
                         },

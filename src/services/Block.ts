@@ -2,7 +2,6 @@ import { v4 } from "uuid";
 import Handlebars from "handlebars";
 import EventBus from "./EventBus";
 import isEqual from "../helpers/isEqual";
-import merge from "../helpers/merge";
 
 type Events = Record<string, (e: Event | never) => void>;
 type ObjectT = Record<string, unknown>;
@@ -73,7 +72,7 @@ export default class Block {
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
 
-    private _getChildren(propsAndChildren: ObjectT) {
+    _getChildren(propsAndChildren: ObjectT) {
         const props: ObjectT = {};
         const children: Record<string, Block> = {};
         const lists: ObjectT = {};
@@ -206,16 +205,16 @@ export default class Block {
         const { props, children, lists } = this._getChildren(newProps);
 
         if (Object.values(props).length && !isEqual(this.props, props)) {
-            this.props = merge(this.props, props);
+            this.props = Object.assign(this.props, props);
         }
         if (
             Object.values(children).length &&
             !isEqual(this.children, children)
         ) {
-            this.children = merge(this.children, children);
+            this.children = Object.assign(this.children, children);
         }
         if (Object.values(lists).length && !isEqual(this.lists, lists)) {
-            this.lists = merge(this.lists, lists);
+            this.lists = Object.assign(this.lists, lists);
         }
     };
 

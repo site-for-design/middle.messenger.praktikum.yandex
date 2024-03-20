@@ -2,23 +2,22 @@ import Route from "./Route";
 import Block from "../Block";
 
 class Router {
-    static __instance: InstanceType<typeof Router>;
+    static _instance: InstanceType<typeof Router>;
     routes: Route[];
     history: History;
     _currentRoute: Route | null;
     _rootQuery: string;
 
     constructor(rootQuery: string) {
-        if (Router.__instance) {
-            return Router.__instance;
+        if (Router._instance) {
+            return Router._instance;
         }
+        Router._instance = this;
 
         this.routes = [];
         this.history = window.history;
         this._currentRoute = null;
         this._rootQuery = rootQuery;
-
-        Router.__instance = this;
     }
 
     use(

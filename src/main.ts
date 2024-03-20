@@ -6,7 +6,9 @@ import ErrorPage from "./pages/error";
 import "./assets/scss/styles.scss";
 import router from "./services/Router/Router";
 import { getUserInfo } from "./api/auth";
-import { setCurrentUser } from "./services/Store";
+import { store, setCurrentUser } from "./services/Store";
+
+store;
 
 router
     .use("*", ErrorPage, {

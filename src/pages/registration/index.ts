@@ -10,10 +10,6 @@ import "./styles.scss";
 import { SignUpData, signUp } from "../../api/auth";
 import router from "../../services/Router/Router";
 import Link from "../../components/Link";
-import { Store } from "../../services/Store";
-import { log } from "console";
-
-const store = new Store();
 
 const fields = [
     new Input(

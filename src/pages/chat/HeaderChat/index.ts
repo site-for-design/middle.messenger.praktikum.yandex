@@ -1,20 +1,14 @@
 import tpl from "./tpl.hbs?raw";
-import Block, { BlockProps } from "../../../services/Block";
+import Block from "../../../services/Block";
 import { RESOURCES_URL } from "../../../api/HTTPTransportYaPraktikum";
-
-type HeaderChatProps = BlockProps & {
-    name: string | null;
-    avatar: string | null;
-};
+import { Connect } from "../../../services/Store";
+import UserActionsDropdown from "../UserActionsDropdown";
 
 class HeaderChat extends Block {
-    constructor(props: HeaderChatProps) {
+    constructor() {
         super(
             {
-                ...props,
-                avatar: props.avatar
-                    ? RESOURCES_URL + props.avatar
-                    : "img/noImage.svg",
+                userActions: UserActionsDropdown,
                 attrs: {
                     class: "header",
                 },
@@ -27,4 +21,13 @@ class HeaderChat extends Block {
     }
 }
 
-export default HeaderChat;
+const HeaderChatWithStore = Connect(HeaderChat, (state) => {
+    return {
+        name: state.currentChat?.title,
+        avatar: state.currentChat?.avatar
+            ? `${RESOURCES_URL}${state.currentChat?.avatar}`
+            : "img/noImage.svg",
+    };
+});
+
+export default HeaderChatWithStore;

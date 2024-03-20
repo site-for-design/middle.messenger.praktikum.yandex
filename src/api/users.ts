@@ -14,7 +14,7 @@ export const changeUserProfile = async (data: User): Promise<User> => {
     return fetch.put(`/user/profile`, { data });
 };
 
-export const changeUserAvatar = async (data: FormData): Promise<unknown> => {
+export const changeUserAvatar = async (data: FormData): Promise<User> => {
     return fetch.put(`/user/profile/avatar`, { data });
 };
 

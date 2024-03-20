@@ -79,9 +79,7 @@ export const getChatMessagesCount = async (
 ): Promise<CreateChatResponse> => {
     return fetch.get(`/chats/new/${chatId}/users`);
 };
-export const changeChatAvatar = async (
-    data: FormData
-): Promise<CreateChatResponse> => {
+export const changeChatAvatar = async (data: FormData): Promise<Chat> => {
     return fetch.put(`/chats/avatar`, { data });
 };
 

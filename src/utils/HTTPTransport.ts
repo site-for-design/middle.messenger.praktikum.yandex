@@ -13,6 +13,10 @@ type Options = {
     withCredentials?: boolean;
     timeout?: number;
 };
+type HTTPMethod = <R = unknown>(
+    url: string,
+    options?: Omit<Options, "method">
+) => Promise<R>;
 
 export default class HTTPTransport {
     baseUrl?: string;
@@ -42,14 +46,18 @@ export default class HTTPTransport {
 
             xhr.onload = function () {
                 const status = xhr.status || 0;
-                if (status >= 200 && status < 300) {
-                    resolve(
-                        xhr.response === "OK"
-                            ? xhr.response
-                            : JSON.parse(xhr.response)
-                    );
-                } else {
-                    reject(JSON.parse(xhr.response));
+                try {
+                    if (status >= 200 && status < 300) {
+                        resolve(
+                            xhr.response === "OK"
+                                ? xhr.response
+                                : JSON.parse(xhr.response)
+                        );
+                    } else {
+                        reject(JSON.parse(xhr.response));
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
             };
 
@@ -70,19 +78,16 @@ export default class HTTPTransport {
             }
         });
     };
-    get = <T>(url: string, options?: Omit<Options, "method">): Promise<T> => {
-        return this.request(url, { ...options, method: METHODS.GET });
-    };
-    post = <T>(url: string, options?: Omit<Options, "method">): Promise<T> => {
-        return this.request(url, { ...options, method: METHODS.POST });
-    };
-    put = <T>(url: string, options?: Omit<Options, "method">): Promise<T> => {
-        return this.request(url, { ...options, method: METHODS.PUT });
-    };
-    delete = <T>(
-        url: string,
-        options?: Omit<Options, "method">
-    ): Promise<T> => {
-        return this.request(url, { ...options, method: METHODS.DELETE });
-    };
+
+    get: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.GET });
+
+    put: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.PUT });
+
+    post: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.POST });
+
+    delete: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.DELETE });
 }

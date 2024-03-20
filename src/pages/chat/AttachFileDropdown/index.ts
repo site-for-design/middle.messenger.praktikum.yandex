@@ -32,9 +32,7 @@ const AttachFileDropdown = new Dropdown({
                             ),
                         ],
                         events: {
-                            click: () => {
-                                // instanceModalAddUser.show();
-                            },
+                            click: () => {},
                         },
                     },
                     "li"
@@ -56,9 +54,7 @@ const AttachFileDropdown = new Dropdown({
                             ),
                         ],
                         events: {
-                            click: () => {
-                                // modalRemoveUser(store.currentChatId).show();
-                            },
+                            click: () => {},
                         },
                     },
                     "li"
@@ -80,9 +76,7 @@ const AttachFileDropdown = new Dropdown({
                             ),
                         ],
                         events: {
-                            click: () => {
-                                // modalRemoveUser.show();
-                            },
+                            click: () => {},
                         },
                     },
                     "li"
