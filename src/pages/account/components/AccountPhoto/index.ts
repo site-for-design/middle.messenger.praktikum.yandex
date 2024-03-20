@@ -2,15 +2,13 @@ import Block, { BlockProps } from "../../../../services/Block";
 import tpl from "./tpl.hbs?raw";
 import "./styles.scss";
 import { RESOURCES_URL } from "../../../../api/HTTPTransportYaPraktikum";
+import { Connect } from "../../../../services/Store";
 
-export default class AccountPhoto extends Block {
+class AccountPhoto extends Block {
     constructor(props: BlockProps) {
         super(
             {
                 ...props,
-                avatar: props.avatar
-                    ? `${RESOURCES_URL}${props.avatar}`
-                    : "img/noImage.svg",
                 attrs: {
                     class: "user-avatar",
                 },
@@ -22,3 +20,11 @@ export default class AccountPhoto extends Block {
         return this.compile(tpl, this.props);
     }
 }
+const AccountPhotoWithStore = Connect(AccountPhoto, (state) => {
+    return {
+        avatar: state.user?.avatar
+            ? `${RESOURCES_URL}${state.user?.avatar}`
+            : "img/noImage.svg",
+    };
+});
+export default AccountPhotoWithStore;

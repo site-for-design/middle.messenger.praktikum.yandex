@@ -1,6 +1,7 @@
 import { v4 } from "uuid";
 import Handlebars from "handlebars";
 import EventBus from "./EventBus";
+import isEqual from "../helpers/isEqual";
 
 type Events = Record<string, (e: Event | never) => void>;
 type ObjectT = Record<string, unknown>;
@@ -26,7 +27,7 @@ export const setDefaultClassName = (
     });
 };
 
-export default class Block {
+export default abstract class Block {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
@@ -71,7 +72,7 @@ export default class Block {
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
 
-    private _getChildren(propsAndChildren: ObjectT) {
+    _getChildren(propsAndChildren: ObjectT) {
         const props: ObjectT = {};
         const children: Record<string, Block> = {};
         const lists: ObjectT = {};
@@ -162,13 +163,13 @@ export default class Block {
         });
     }
 
-    refresh() {
-        this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+    // refresh() {
+    //     this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
 
-        setTimeout(() => {
-            this.eventBus.emit(Block.EVENTS.FLOW_CDM);
-        });
-    }
+    //     setTimeout(() => {
+    //         this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+    //     });
+    // }
 
     private _componentDidMount() {
         this.componentDidMount();
@@ -185,7 +186,7 @@ export default class Block {
     }
 
     private _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
-        if (oldProps !== newProps) {
+        if (!isEqual(oldProps, newProps)) {
             this.componentDidUpdate();
             this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
             return true;
@@ -203,13 +204,16 @@ export default class Block {
         }
         const { props, children, lists } = this._getChildren(newProps);
 
-        if (Object.values(props).length) {
+        if (Object.values(props).length && !isEqual(this.props, props)) {
             this.props = Object.assign(this.props, props);
         }
-        if (Object.values(children).length) {
+        if (
+            Object.values(children).length &&
+            !isEqual(this.children, children)
+        ) {
             this.children = Object.assign(this.children, children);
         }
-        if (Object.values(lists).length) {
+        if (Object.values(lists).length && !isEqual(this.lists, lists)) {
             this.lists = Object.assign(this.lists, lists);
         }
     };

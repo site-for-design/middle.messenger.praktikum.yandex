@@ -12,19 +12,18 @@ type Message = {
     user_id: number;
 };
 
-export const MESSAGES_OFFSET = 20;
-
 class ChatWS {
     static _instance: InstanceType<typeof ChatWS>;
     socket: WebSocket;
     messages: Message[];
     constructor() {
-        this.socket;
-        this.messages = [];
-
         if (ChatWS._instance) {
             return ChatWS._instance;
         }
+        ChatWS._instance = this;
+
+        this.socket;
+        this.messages = [];
     }
 
     async connect(userId: number, chatId: number) {
@@ -70,6 +69,8 @@ class ChatWS {
     // }
 
     getOldMessages() {
+        console.log(this);
+
         this.socket.send(
             JSON.stringify({
                 content: this.messages.length,

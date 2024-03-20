@@ -237,7 +237,9 @@ const handleSubmit = async (e: Event) => {
         );
 
         try {
-            await signUp(data);
+            const user = await signUp(data);
+            console.log(user);
+
             router.go("/messenger");
         } catch (e) {
             console.error(e);

@@ -1,7 +1,7 @@
 import fetch from "./HTTPTransportYaPraktikum";
 import { User } from "./types";
 
-type UnknownData = Record<string, unknown>;
+// type UnknownData = Record<string, unknown>;
 
 type Message = {
     user: User;
@@ -29,6 +29,21 @@ declare module CreateChat {
     };
 }
 
+declare module DeleteChat {
+    export type Request = {
+        chatId: number;
+    };
+    export type Response = {
+        userId: number;
+        result: {
+            id: number;
+            title: string;
+            avatar: string;
+            created_by: number;
+        };
+    };
+}
+
 export const getChats = async (): Promise<CreateChatResponse> => {
     return fetch.get("/chats");
 };
@@ -38,13 +53,15 @@ export const getChat = async (chatId: string): Promise<CreateChatResponse> => {
 };
 
 export const createChat = async (
-    data: UnknownData
+    data: CreateChat.Request
 ): Promise<CreateChat.Response> => {
     return fetch.post("/chats", { data });
 };
 
-export const deleteChat = async () => {
-    return fetch.get("/chats");
+export const deleteChat = async (
+    data: DeleteChat.Request
+): Promise<DeleteChat.Response> => {
+    return fetch.delete("/chats", { data });
 };
 
 export const getChatFiles = async (
@@ -62,9 +79,7 @@ export const getChatMessagesCount = async (
 ): Promise<CreateChatResponse> => {
     return fetch.get(`/chats/new/${chatId}/users`);
 };
-export const changeChatAvatar = async (
-    data: FormData
-): Promise<CreateChatResponse> => {
+export const changeChatAvatar = async (data: FormData): Promise<Chat> => {
     return fetch.put(`/chats/avatar`, { data });
 };
 

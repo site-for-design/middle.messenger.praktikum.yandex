@@ -3,8 +3,8 @@ import Form from "../../../../components/Form";
 import Modal from "../../../../components/Modal";
 import Title from "../../../../components/Title";
 import InputFile from "../../../../components/InputFile";
-import { changeUserAvatar } from "../../../../api/users";
 import Unit from "../../../../components/Unit";
+import { changeChatAvatar } from "../../../../api/chats";
 import { store } from "../../../../services/Store";
 
 const DEFAULT_TITLE_TEXT = "Загрузите файл";
@@ -58,14 +58,30 @@ const formChangeAvatar = new Form({
     events: {
         submit: async (e: SubmitEvent) => {
             e.preventDefault();
+            const currentChatId = store.getStateEl("currentChat")?.id;
             const formData = new FormData();
-            if (formChangeAvatar.props.file) {
-                formData.append("avatar", formChangeAvatar.props.file as Blob);
-            }
 
             try {
-                const user = await changeUserAvatar(formData);
-                store.set("user", user);
+                if (currentChatId) {
+                    if (formChangeAvatar.props.file) {
+                        formData.append(
+                            "avatar",
+                            formChangeAvatar.props.file as Blob
+                        );
+                        formData.append("chatId", String(currentChatId));
+                    }
+                    const currentChat = await changeChatAvatar(formData);
+
+                    store.set("currentChat", currentChat);
+                    store.set(
+                        "chatList",
+                        store
+                            .getStateEl("chatList")
+                            .map((chat) =>
+                                chat.id === currentChat.id ? currentChat : chat
+                            )
+                    );
+                }
                 // TODO: set store to update avatar here
                 formChangeAvatar.setProps({
                     footer: new Unit(),

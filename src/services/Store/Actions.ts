@@ -1,12 +1,21 @@
-import { User } from "../../api/types";
-import Store from "./Store";
+import { store, StoreState } from "./Store";
 
-const store = new Store();
-
-export const setCurrentUser = (user: User) => {
+export const setCurrentUser = (user: StoreState["user"]) => {
     store.set("user", user);
 };
 
-export const setCurrentChatId = (id: number) => {
-    store.set("currentChatId", id);
+export const setCurrentChat = (currentChat: StoreState["currentChat"]) => {
+    store.set("currentChat", currentChat);
+};
+export const setCurrentChatMessages = (
+    messages: StoreState["currentChatMessages"]
+) => {
+    store.set("currentChatMessages", messages);
+};
+export const setCurrentChatUsers = (users: StoreState["currentChatUsers"]) => {
+    store.set("currentChatUsers", users);
+};
+
+export const setChatList = (chats: StoreState["chatList"]) => {
+    store.set("chatList", chats);
 };
