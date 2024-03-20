@@ -1,5 +1,4 @@
-import Route from "./Route";
-import Block from "../Block";
+import Route, { RouteBlock } from "./Route";
 
 class Router {
     static _instance: InstanceType<typeof Router>;
@@ -20,11 +19,7 @@ class Router {
         this._rootQuery = rootQuery;
     }
 
-    use(
-        pathname: string,
-        block: typeof Block,
-        props?: Record<string, unknown>
-    ) {
+    use(pathname: string, block: RouteBlock, props?: Record<string, unknown>) {
         const route = new Route(pathname, block, this._rootQuery, props);
         this.routes.push(route);
         return this;

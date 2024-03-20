@@ -15,7 +15,7 @@ function render(query: string, block: Block) {
 
 type RouteProps = Record<string, unknown>;
 
-type RouteBlock = new (props?: RouteProps) => Block;
+export type RouteBlock = new (props?: RouteProps) => Block;
 
 export default class Route {
     _pathname: string;
