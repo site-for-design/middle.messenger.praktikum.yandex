@@ -2,7 +2,7 @@ import Indexed from "./types/indexed";
 
 export default function merge<T extends Indexed>(lhs: T, rhs: T): T {
     for (const p in rhs) {
-        if (!rhs.hasOwnProperty(p)) {
+        if (!Object.getOwnPropertyDescriptor(rhs, p)) {
             continue;
         }
 

@@ -1,5 +1,5 @@
 import IndexPage from "./indexPage";
-import { Connect, StoreState } from "../../services/Store";
+import { Connect } from "../../services/Store";
 import Button from "../../components/Button";
 import Form from "../../components/Form";
 import Unit from "../../components/Unit";
