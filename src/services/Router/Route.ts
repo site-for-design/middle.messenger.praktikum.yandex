@@ -15,16 +15,18 @@ function render(query: string, block: Block) {
 
 type RouteProps = Record<string, unknown>;
 
+type RouteBlock = new (props?: RouteProps) => Block;
+
 export default class Route {
     _pathname: string;
-    _blockClass: typeof Block;
-    _block: InstanceType<typeof Block> | null;
+    _blockClass: RouteBlock;
+    _block: InstanceType<RouteBlock> | null;
     _rootQuery: string;
     _props?: RouteProps;
 
     constructor(
         pathname: string,
-        view: typeof Block,
+        view: RouteBlock,
         rootQuery: string,
         props?: RouteProps
     ) {
