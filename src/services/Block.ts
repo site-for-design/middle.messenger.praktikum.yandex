@@ -27,7 +27,7 @@ export const setDefaultClassName = (
     });
 };
 
-export default class Block {
+export default abstract class Block {
     static EVENTS = {
         INIT: "init",
         FLOW_CDM: "flow:component-did-mount",
