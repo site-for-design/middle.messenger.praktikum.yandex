@@ -1,35 +1,54 @@
-import Block from "./services/Block";
 import LoginPage from "./pages/login";
 import RegistrationPage from "./pages/registration";
 import ChatPage from "./pages/chat";
+import AccountPage from "./pages/account";
 import ErrorPage from "./pages/error";
 import "./assets/scss/styles.scss";
+import router from "./services/Router/Router";
+import { getUserInfo } from "./api/auth";
+import { store, setCurrentUser } from "./services/Store";
 
-const routes: Record<string, Block> = {
-    homepage: LoginPage,
-    registration: RegistrationPage,
-    chat: ChatPage,
-    error500: new ErrorPage({
-        errorCode: "500 ",
+store;
+
+router
+    .use("*", ErrorPage, {
+        justification: "Не туда попали",
+        errorCode: "404",
+    })
+    .use("/", LoginPage)
+    .use("/sign-up", RegistrationPage)
+    .use("/messenger", ChatPage)
+    .use("/settings", AccountPage)
+    .use("/error500", ErrorPage, {
         justification: "Мы уже фиксим",
-    }),
-};
+        errorCode: "500",
+    })
+    .start();
 
-const pathName = window.location.pathname.slice(1);
+document.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).tagName.toLowerCase() === "a") {
+        e.preventDefault();
+        const link = (e.target as HTMLElement).getAttribute("href");
+        if (link) {
+            router.go(link);
+        }
+    }
+});
 
-const res = pathName
-    ? routes[pathName]
-        ? routes[pathName]
-        : new ErrorPage({
-              errorCode: "404",
-              justification: "Не туда попали",
-          })
-    : routes.homepage;
+getUserInfo()
+    .then((user) => {
+        if (
+            user &&
+            (router._currentRoute?._pathname === "/" ||
+                router._currentRoute?._pathname === "/sign-up")
+        ) {
+            router.go("/messenger");
+        }
 
-function render(query: string, block: Block) {
-    const root = document.querySelector(query);
-    root?.appendChild(block.getContent());
-    return root;
-}
-
-render("#app", res);
+        setCurrentUser(user);
+    })
+    .catch(() => {
+        if (router._currentRoute?._pathname !== "/sign-up") {
+            router.go("/");
+        }
+    });

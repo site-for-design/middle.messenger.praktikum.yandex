@@ -7,12 +7,12 @@ export default class Input extends Block {
         super(setDefaultClassName(props, "input-wrap"), tagName);
     }
 
-    componentDidMount(): void {
+    addEvents(): void {
         if (this.props.onChange) {
             this.element
                 .querySelector("input")
                 ?.addEventListener("blur", (e) => {
-                    (this.props.onChange as (e?: EventTarget) => void)(
+                    (this.props.onChange as (target?: EventTarget) => void)(
                         e.target ?? undefined
                     );
                 });

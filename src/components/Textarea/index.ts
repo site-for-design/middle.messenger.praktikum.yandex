@@ -3,7 +3,7 @@ import tpl from "./tpl.hbs?raw";
 import "./styles.scss";
 
 export default class Textarea extends Block {
-    componentDidMount(): void {
+    addEvents(): void {
         if (this.props.onChange) {
             this.element
                 .querySelector("textarea")

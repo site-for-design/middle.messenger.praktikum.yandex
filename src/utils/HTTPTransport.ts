@@ -1,3 +1,5 @@
+import queryString from "../helpers/queryStringify";
+
 enum METHODS {
     GET = "GET",
     POST = "POST",
@@ -5,101 +7,87 @@ enum METHODS {
     DELETE = "DELETE",
 }
 
-type Options = { method: METHODS; data?: Record<string, unknown> };
-
-const convertToParamsUrl = (data: Record<string, unknown> = {}) => {
-    return Object.keys(data).reduce((acc, key, index) => {
-        return acc + (index === 0 ? "?" : "&") + `${key}=${data[key]}`;
-    }, "");
+type Options = {
+    method: METHODS;
+    data?: Record<string, unknown> | FormData;
+    withCredentials?: boolean;
+    timeout?: number;
 };
-
-function queryStringify(data?: Record<string, unknown>) {
-    return data ? JSON.stringify(data) : "";
-}
-
-type HTTPMethod = (
+type HTTPMethod = <R = unknown>(
     url: string,
-    options: Options,
-    timeout?: number
-) => Promise<unknown>;
+    options?: Omit<Options, "method">
+) => Promise<R>;
 
 export default class HTTPTransport {
-    request: HTTPMethod = (url, options, timeout = 2000) => {
-        const { method, data } = options;
+    baseUrl?: string;
+
+    constructor(baseUrl?: string) {
+        this.baseUrl = baseUrl;
+    }
+
+    private request = <T>(url: string, options: Options): Promise<T> => {
+        const {
+            method,
+            data,
+            withCredentials = true,
+            timeout = 60000,
+        } = options;
 
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
+
             xhr.timeout = timeout;
 
+            let finalUrl = this.baseUrl + url;
             if (method === METHODS.GET && data) {
-                xhr.open(method, url + convertToParamsUrl(data));
-            } else {
-                xhr.open(method, url);
+                finalUrl += queryString(data as Record<string, unknown>);
             }
+            xhr.open(method, finalUrl);
 
             xhr.onload = function () {
-                resolve(xhr);
+                const status = xhr.status || 0;
+                try {
+                    if (status >= 200 && status < 300) {
+                        resolve(
+                            xhr.response === "OK"
+                                ? xhr.response
+                                : JSON.parse(xhr.response)
+                        );
+                    } else {
+                        reject(JSON.parse(xhr.response));
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             };
 
             xhr.onabort = reject;
             xhr.onerror = reject;
             xhr.ontimeout = reject;
 
-            if (method === METHODS.GET && data) {
+            xhr.withCredentials = withCredentials;
+
+            if (method === METHODS.GET || !data) {
                 xhr.send();
+            } else if (data instanceof FormData) {
+                // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+                xhr.send(data);
             } else {
-                xhr.send(queryStringify(data));
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send(JSON.stringify(data));
             }
         });
     };
-    get: HTTPMethod = (url, options, timeout) => {
-        return this.request(url, { ...options, method: METHODS.GET }, timeout);
-    };
-    post: HTTPMethod = (url, options, timeout) => {
-        return this.request(url, { ...options, method: METHODS.POST }, timeout);
-    };
-    put: HTTPMethod = (url, options, timeout) => {
-        return this.request(url, { ...options, method: METHODS.PUT }, timeout);
-    };
-    delete: HTTPMethod = (url, options, timeout) => {
-        return this.request(
-            url,
-            { ...options, method: METHODS.DELETE },
-            timeout
-        );
-    };
-}
 
-export function fetchWithRetry(
-    url: string,
-    options: Options & { retries: number },
-    timeout: number
-) {
-    const { method, data, retries = 2 } = options;
-    const fetchInstance = new HTTPTransport();
-    let i = retries;
+    get: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.GET });
 
-    const fetchLoop = () => {
-        return fetchInstance
-            .get(url, { method, data }, timeout)
-            .then((res) => {
-                return Promise.resolve(res);
-            })
-            .catch((e) => {
-                i = -1;
-                if (i === 0) {
-                    fetchLoop();
-                } else {
-                    throw new Error(e);
-                }
-            });
+    put: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.PUT });
 
-        // return response;
-    };
-    try {
-        const res = fetchLoop();
-        return res;
-    } catch (e) {
-        return e;
-    }
+    post: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.POST });
+
+    delete: HTTPMethod = (url, options = {}) =>
+        this.request(url, { ...options, method: METHODS.DELETE });
 }

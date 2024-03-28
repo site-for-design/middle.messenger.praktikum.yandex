@@ -2,19 +2,18 @@
 
 https://github.com/site-for-design/middle.messenger.praktikum.yandex
 
-В этом спринте я сверстал страницы из предложенного макета. Сделал минимальный интерактив скриптами (модалки, увеличение текстового поля message, редактирование профиля). Формы пока ничего не изменяют.
+В этом спринте я частично привязал апи к проекту. Удаление чата и изменение фото чата находится в выпадающем меню сверху справа.
 
-Я замокал данные переписок. И кредов для Login Page (чтобы без ошибок отправить данные формы нужно в login написать login, в password - Password1).
+Надо доделать - отправка файлов и стикеров в чат, поиск чата, архивацию чатов, рейтинг пользователей, Oauth, ping-pong webSocket.
 
 ## Страницы
 
 -   [Login Page](https://yaproject2.netlify.app),
 -   [Registration Page](https://yaproject2.netlify.app/registration),
--   [Chat Page](https://yaproject2.netlify.app/chat),
+-   [Messenger Page](https://yaproject2.netlify.app/messenger),
+-   [Settings Page](https://yaproject2.netlify.app/settings),
 -   [404 Page](https://yaproject2.netlify.app/smth),
--   [500 Page](https://yaproject2.netlify.app/500),
-
-Account секция сверстана в Chat Page как модальное окно, чтобы открыть - нажмите на профиль в сайдбаре слева.
+-   [500 Page](https://yaproject2.netlify.app/error500),
 
 ## Установка
 
