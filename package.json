@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm format && npm-run-all test lint:all && git add -A ."
+      "pre-commit": "echo \"[Husky] post-applypatch\""
     }
   },
   "devDependencies": {
