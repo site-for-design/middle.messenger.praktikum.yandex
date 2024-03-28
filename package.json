@@ -11,11 +11,13 @@
     "dev": "vite",
     "build": "vite build",
     "test": "node --trace-deprecation --import ./mochaImports.js ./node_modules/mocha/bin/mocha",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test lint:all"
+      "pre-commit": "npm format && npm-run-all test lint:all && git add -A ."
     }
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "jsdom": "^24.0.0",
     "mocha": "^10.3.0",
     "node-esm-loader": "^0.3.0",
+    "prettier": "^3.2.5",
     "sass": "^1.71.1",
     "sinon": "^17.0.1",
     "stylelint": "^16.2.1",
