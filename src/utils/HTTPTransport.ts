@@ -1,93 +1,85 @@
-import queryString from "../helpers/queryStringify";
+import queryString from "../helpers/queryStringify.ts";
 
 enum METHODS {
-    GET = "GET",
-    POST = "POST",
-    PUT = "PUT",
-    DELETE = "DELETE",
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
 }
 
 type Options = {
-    method: METHODS;
-    data?: Record<string, unknown> | FormData;
-    withCredentials?: boolean;
-    timeout?: number;
+  method: METHODS;
+  data?: Record<string, unknown> | FormData;
+  withCredentials?: boolean;
+  timeout?: number;
 };
 type HTTPMethod = <R = unknown>(
-    url: string,
-    options?: Omit<Options, "method">
+  url: string,
+  options?: Omit<Options, "method">,
 ) => Promise<R>;
 
 export default class HTTPTransport {
-    baseUrl?: string;
+  baseUrl?: string;
 
-    constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl;
-    }
+  constructor(baseUrl?: string) {
+    this.baseUrl = baseUrl;
+  }
 
-    private request = <T>(url: string, options: Options): Promise<T> => {
-        const {
-            method,
-            data,
-            withCredentials = true,
-            timeout = 60000,
-        } = options;
+  private request = <T>(url: string, options: Options): Promise<T> => {
+    const { method, data, withCredentials = true, timeout = 60000 } = options;
 
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
 
-            xhr.timeout = timeout;
+      xhr.timeout = timeout;
 
-            let finalUrl = this.baseUrl + url;
-            if (method === METHODS.GET && data) {
-                finalUrl += queryString(data as Record<string, unknown>);
-            }
-            xhr.open(method, finalUrl);
+      const finalUrl = this.baseUrl + url;
+      xhr.open(method, finalUrl);
 
-            xhr.onload = function () {
-                const status = xhr.status || 0;
-                try {
-                    if (status >= 200 && status < 300) {
-                        resolve(
-                            xhr.response === "OK"
-                                ? xhr.response
-                                : JSON.parse(xhr.response)
-                        );
-                    } else {
-                        reject(JSON.parse(xhr.response));
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
-            };
+      xhr.onload = function () {
+        const status = xhr.status || 0;
+        try {
+          if (status >= 200 && status < 300) {
+            resolve(
+              xhr.response === "OK" ? xhr.response : JSON.parse(xhr.response),
+            );
+          } else {
+            reject(JSON.parse(xhr.response));
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      };
 
-            xhr.onabort = reject;
-            xhr.onerror = reject;
-            xhr.ontimeout = reject;
+      xhr.onabort = reject;
+      xhr.onerror = reject;
+      xhr.ontimeout = reject;
 
-            xhr.withCredentials = withCredentials;
+      xhr.withCredentials = withCredentials;
 
-            if (method === METHODS.GET || !data) {
-                xhr.send();
-            } else if (data instanceof FormData) {
-                // xhr.setRequestHeader("Content-Type", "multipart/form-data");
-                xhr.send(data);
-            } else {
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.send(JSON.stringify(data));
-            }
-        });
-    };
+      if (method === METHODS.GET || !data) {
+        xhr.send();
+      } else if (data instanceof FormData) {
+        // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+        xhr.send(data);
+      } else {
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(data));
+      }
+    });
+  };
 
-    get: HTTPMethod = (url, options = {}) =>
-        this.request(url, { ...options, method: METHODS.GET });
+  get: HTTPMethod = (url, options = {}) => {
+    const finalUrl = options.data ? url + queryString(options.data) : url;
+    return this.request(finalUrl, { ...options, method: METHODS.GET });
+  };
 
-    put: HTTPMethod = (url, options = {}) =>
-        this.request(url, { ...options, method: METHODS.PUT });
+  put: HTTPMethod = (url, options = {}) =>
+    this.request(url, { ...options, method: METHODS.PUT });
 
-    post: HTTPMethod = (url, options = {}) =>
-        this.request(url, { ...options, method: METHODS.POST });
+  post: HTTPMethod = (url, options = {}) =>
+    this.request(url, { ...options, method: METHODS.POST });
 
-    delete: HTTPMethod = (url, options = {}) =>
-        this.request(url, { ...options, method: METHODS.DELETE });
+  delete: HTTPMethod = (url, options = {}) =>
+    this.request(url, { ...options, method: METHODS.DELETE });
 }

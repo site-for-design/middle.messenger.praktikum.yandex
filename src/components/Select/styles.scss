@@ -1,37 +1,37 @@
 .select-wrap {
+  width: 100%;
+  margin-bottom: 16px;
+  position: relative;
+  display: block;
+
+  .label {
+    pointer-events: none;
+    transition: 0.2s ease all;
+    color: $light-text-color;
+  }
+
+  select {
+    border: none;
+    outline: none;
+    padding-top: 10px;
+    border-bottom: 1px solid #3369f3;
     width: 100%;
-    margin-bottom: 16px;
-    position: relative;
-    display: block;
+    padding-bottom: 6px;
+  }
 
-    .label {
-        pointer-events: none;
-        transition: 0.2s ease all;
-        color: $light-text-color;
-    }
+  .prompt {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: -16px;
+    font-size: 8px;
+    font-weight: 400;
+    color: $red-color;
+  }
 
-    select {
-        border: none;
-        outline: none;
-        padding-top: 10px;
-        border-bottom: 1px solid #3369f3;
-        width: 100%;
-        padding-bottom: 6px;
-    }
-
+  &.error {
     .prompt {
-        display: none;
-        position: absolute;
-        left: 0;
-        bottom: -16px;
-        font-size: 8px;
-        font-weight: 400;
-        color: $red-color;
+      display: block;
     }
-
-    &.error {
-        .prompt {
-            display: block;
-        }
-    }
+  }
 }

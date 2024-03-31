@@ -1,59 +1,59 @@
 .message-c {
-    position: relative;
-    margin-bottom: 10px;
-    padding: 10px 10px 20px 20px;
-    max-width: 410px;
-    border-radius: 12px;
+  position: relative;
+  margin-bottom: 10px;
+  padding: 10px 10px 20px 20px;
+  max-width: 410px;
+  border-radius: 12px;
 
-    .content {
-        display: flex;
-        flex-flow: column wrap;
+  .content {
+    display: flex;
+    flex-flow: column wrap;
+  }
+
+  p {
+    margin-bottom: 20px;
+
+    &:last-of-type {
+      margin-bottom: 0;
     }
+  }
 
-    p {
-        margin-bottom: 20px;
+  .time {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 9px;
+  }
 
-        &:last-of-type {
-            margin-bottom: 0;
-        }
-    }
+  &.current-user {
+    background-color: $light-primary-color;
+    padding-right: 60px;
+    margin-left: auto;
 
     .time {
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-        font-size: 9px;
+      display: flex;
+      color: $primary-color;
     }
+  }
 
-    &.current-user {
-        background-color: $light-primary-color;
-        padding-right: 60px;
-        margin-left: auto;
-
-        .time {
-            display: flex;
-            color: $primary-color;
-        }
+  &.checked {
+    .time::before {
+      content: url("../../assets/img/checked.svg");
+      margin-right: 4px;
     }
+  }
 
-    &.checked {
-        .time::before {
-            content: url("../../assets/img/checked.svg");
-            margin-right: 4px;
-        }
+  &:has(.content img) {
+    padding: 0;
+    border: 1px solid $bg-color;
+
+    .time {
+      height: 13px;
+      line-height: 13px;
+      border-radius: 30px;
+      padding: 0 7px;
+      color: #fff;
+      background: #52525280;
     }
-
-    &:has(.content img) {
-        padding: 0;
-        border: 1px solid $bg-color;
-
-        .time {
-            height: 13px;
-            line-height: 13px;
-            border-radius: 30px;
-            padding: 0 7px;
-            color: #fff;
-            background: #52525280;
-        }
-    }
+  }
 }

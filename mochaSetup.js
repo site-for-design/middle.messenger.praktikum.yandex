@@ -1,10 +1,12 @@
 import { JSDOM } from "jsdom";
 
-const jsdom = new JSDOM("<body></body>", {
-    url: "https://example.org",
-});
+const dom = new JSDOM(
+  "<!DOCTYPE html><html><head></head><body id='app'></body></html>",
+  {
+    url: "http://localhost",
+  },
+);
 
-global.window = jsdom.window;
-global.document = jsdom.document;
-global.FormData = jsdom.window.FormData;
+global.window = dom.window;
+global.document = dom.window.document;
 // (global.HTTPTransport as typeof HTTPTransport) = HTTPTransport;

@@ -13,12 +13,8 @@
     "test": "node --trace-deprecation --import ./mochaImports.js ./node_modules/mocha/bin/mocha",
     "preview": "vite preview",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "echo \"[Husky] post-applypatch\""
-    }
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/chai": "^4.3.14",
@@ -26,6 +22,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.28",
     "@types/sinon": "^17.0.3",
+    "@types/sinon-chai": "^3.2.12",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
@@ -36,9 +33,11 @@
     "jsdom": "^24.0.0",
     "mocha": "^10.3.0",
     "node-esm-loader": "^0.3.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
     "sass": "^1.71.1",
     "sinon": "^17.0.1",
+    "sinon-chai": "^3.7.0",
     "stylelint": "^16.2.1",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.0.0",
@@ -48,7 +47,6 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sinon-chai": "^3.7.0",
     "uuid": "^9.0.1",
     "vite-express": "^0.15.0",
     "vite-plugin-eslint": "^1.8.1",

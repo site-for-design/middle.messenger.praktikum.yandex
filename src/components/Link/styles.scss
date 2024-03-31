@@ -1,20 +1,20 @@
 .link {
-    transition: 0.2s;
-    cursor: pointer;
-    font-size: 11px;
-    color: $primary-color;
+  transition: 0.2s;
+  cursor: pointer;
+  font-size: 11px;
+  color: $primary-color;
 
-    &.red {
-        color: $red-color;
-
-        &:hover {
-            transition: 0.2s;
-            color: $dark-red-color;
-        }
-    }
+  &.red {
+    color: $red-color;
 
     &:hover {
-        transition: 0.2s;
-        color: $dark-primary-color;
+      transition: 0.2s;
+      color: $dark-red-color;
     }
+  }
+
+  &:hover {
+    transition: 0.2s;
+    color: $dark-primary-color;
+  }
 }

@@ -8,16 +8,16 @@ https://github.com/site-for-design/middle.messenger.praktikum.yandex
 
 ## Страницы
 
--   [Login Page](https://yaproject2.netlify.app),
--   [Registration Page](https://yaproject2.netlify.app/registration),
--   [Messenger Page](https://yaproject2.netlify.app/messenger),
--   [Settings Page](https://yaproject2.netlify.app/settings),
--   [404 Page](https://yaproject2.netlify.app/smth),
--   [500 Page](https://yaproject2.netlify.app/error500),
+- [Login Page](https://yaproject2.netlify.app),
+- [Registration Page](https://yaproject2.netlify.app/registration),
+- [Messenger Page](https://yaproject2.netlify.app/messenger),
+- [Settings Page](https://yaproject2.netlify.app/settings),
+- [404 Page](https://yaproject2.netlify.app/smth),
+- [500 Page](https://yaproject2.netlify.app/error500),
 
 ## Установка
 
--   `npm run start` — запуск сборки и превью.
--   `npm run dev` — запуск проекта в режиме разработки.
--   `npm run build` — запуск сборки.
--   `npm run preview` — запуск просмотра сборки.
+- `npm run start` — запуск сборки и превью.
+- `npm run dev` — запуск проекта в режиме разработки.
+- `npm run build` — запуск сборки.
+- `npm run preview` — запуск просмотра сборки.

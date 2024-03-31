@@ -1,136 +1,136 @@
 section#account {
-    transition: 0.4s;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%);
-    z-index: 2;
-    position: fixed;
+  transition: 0.4s;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  z-index: 2;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+
+  .wrap {
+    padding: 60px 0;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+  }
+
+  .back {
+    cursor: pointer;
+    position: absolute;
     left: 0;
     top: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #fff;
+    width: 64px;
+    height: 100%;
+    border-right: 1px solid $bg-color;
+    background-image: url("../../assets/img/ar-circle.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 
-    .wrap {
-        padding: 60px 0;
-        height: 100%;
-        width: 100%;
-        overflow-y: scroll;
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .links {
+    width: 100%;
+    margin-top: 40px;
+
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid $bg-color;
+      display: flex;
+
+      :last-child {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .user-info {
+    pointer-events: none;
+    opacity: 0.8;
+    width: 100%;
+
+    ul {
+      width: 100%;
+
+      li {
+        display: flex;
+        padding: 10px 0;
+        margin-bottom: 0;
+        border-bottom: 1px solid $bg-color;
+
+        :last-child {
+          border-bottom: none;
+        }
+
+        span {
+          font-size: 13px;
+          white-space: nowrap;
+        }
+
+        .label {
+          order: -1;
+          position: static;
+        }
+
+        input {
+          padding: 0;
+          padding-left: 30px;
+          width: 100%;
+          text-align: right;
+          border-bottom: none;
+
+          &:disabled {
+            color: $light-text-color;
+          }
+        }
+
+        &.error {
+          border-color: $red-color;
+
+          .prompt {
+            display: none;
+          }
+        }
+      }
     }
 
-    .back {
-        cursor: pointer;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 64px;
-        height: 100%;
-        border-right: 1px solid $bg-color;
-        background-image: url("../../assets/img/ar-circle.svg");
-        background-position: center;
-        background-repeat: no-repeat;
+    .password {
+      display: none;
     }
 
-    .container {
-        flex-direction: column;
-        align-items: center;
+    .btn {
+      margin: 0 auto;
+      margin-top: 40px;
+      display: none;
+    }
+  }
+
+  &.active {
+    transition: 0.4s;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+
+  &[data-edit] {
+    .user-info {
+      pointer-events: initial;
+      opacity: 1;
     }
 
     .links {
-        width: 100%;
-        margin-top: 40px;
-
-        li {
-            padding: 10px 0;
-            border-bottom: 1px solid $bg-color;
-            display: flex;
-
-            :last-child {
-                border-bottom: none;
-            }
-        }
+      display: none;
     }
 
-    .user-info {
-        pointer-events: none;
-        opacity: 0.8;
-        width: 100%;
-
-        ul {
-            width: 100%;
-
-            li {
-                display: flex;
-                padding: 10px 0;
-                margin-bottom: 0;
-                border-bottom: 1px solid $bg-color;
-
-                :last-child {
-                    border-bottom: none;
-                }
-
-                span {
-                    font-size: 13px;
-                    white-space: nowrap;
-                }
-
-                .label {
-                    order: -1;
-                    position: static;
-                }
-
-                input {
-                    padding: 0;
-                    padding-left: 30px;
-                    width: 100%;
-                    text-align: right;
-                    border-bottom: none;
-
-                    &:disabled {
-                        color: $light-text-color;
-                    }
-                }
-
-                &.error {
-                    border-color: $red-color;
-
-                    .prompt {
-                        display: none;
-                    }
-                }
-            }
-        }
-
-        .password {
-            display: none;
-        }
-
-        .btn {
-            margin: 0 auto;
-            margin-top: 40px;
-            display: none;
-        }
+    .btn {
+      display: block;
     }
-
-    &.active {
-        transition: 0.4s;
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(0);
-    }
-
-    &[data-edit] {
-        .user-info {
-            pointer-events: initial;
-            opacity: 1;
-        }
-
-        .links {
-            display: none;
-        }
-
-        .btn {
-            display: block;
-        }
-    }
+  }
 }

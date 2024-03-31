@@ -1,8 +1,11 @@
 {
-    "extends": "stylelint-config-standard-scss",
-    "rules": {
-        "selector-class-pattern": [".", {
-         "resolveNestedSelectors": true
-       }]
-     }
+  "extends": "stylelint-config-standard-scss",
+  "rules": {
+    "selector-class-pattern": [
+      ".",
+      {
+        "resolveNestedSelectors": true
+      }
+    ]
+  }
 }

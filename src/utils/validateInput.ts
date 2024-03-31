@@ -2,26 +2,26 @@ const ERROR_ELEM_CLASSNAME = "prompt";
 const VISIBLE_ERROR_CLASSNAME = "error";
 
 const validateInput = (
-    validateFc: (val?: string) => boolean,
-    errorText: string,
-    input?: HTMLInputElement
+  validateFc: (val?: string) => boolean,
+  errorText: string,
+  input?: HTMLInputElement,
 ) => {
-    const inputWrap = input?.parentElement;
+  const inputWrap = input?.parentElement;
 
-    if (inputWrap?.getElementsByClassName(ERROR_ELEM_CLASSNAME).length === 0) {
-        const errorElem = document.createElement("span");
-        errorElem.className = ERROR_ELEM_CLASSNAME;
-        errorElem.textContent = errorText;
-        inputWrap?.appendChild(errorElem);
-    }
+  if (inputWrap?.getElementsByClassName(ERROR_ELEM_CLASSNAME).length === 0) {
+    const errorElem = document.createElement("span");
+    errorElem.className = ERROR_ELEM_CLASSNAME;
+    errorElem.textContent = errorText;
+    inputWrap?.appendChild(errorElem);
+  }
 
-    if (input?.value && validateFc(input?.value)) {
-        inputWrap?.classList.remove(VISIBLE_ERROR_CLASSNAME);
-        return input.value;
-    } else {
-        inputWrap?.classList.add(VISIBLE_ERROR_CLASSNAME);
-        return false;
-    }
+  if (input?.value && validateFc(input?.value)) {
+    inputWrap?.classList.remove(VISIBLE_ERROR_CLASSNAME);
+    return input.value;
+  } else {
+    inputWrap?.classList.add(VISIBLE_ERROR_CLASSNAME);
+    return false;
+  }
 };
 
 export default validateInput;
