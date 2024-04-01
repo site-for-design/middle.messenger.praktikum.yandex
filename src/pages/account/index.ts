@@ -93,7 +93,7 @@ const defaultFieldsList = [
     {
       type: "text",
       name: "display_name",
-      isRequired: false,
+      isRequired: true,
       text: "Имя в чате",
     },
     "li",

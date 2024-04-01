@@ -8,11 +8,11 @@
   },
   "scripts": {
     "start": "npm run build && node server.js",
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "vite build",
     "test": "node --trace-deprecation --import ./mochaImports.js ./node_modules/mocha/bin/mocha",
     "preview": "vite preview",
-    "lint": "prettier --check .",
+    "lint": "npx lint-staged",
     "format": "prettier --write .",
     "prepare": "husky"
   },
@@ -31,6 +31,7 @@
     "esmock": "^2.6.4",
     "husky": "^9.0.11",
     "jsdom": "^24.0.0",
+    "lint-staged": "^15.2.2",
     "mocha": "^10.3.0",
     "node-esm-loader": "^0.3.0",
     "npm-run-all": "^4.1.5",
