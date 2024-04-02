@@ -2,9 +2,18 @@
 
 https://github.com/site-for-design/middle.messenger.praktikum.yandex
 
-В этом спринте я частично привязал апи к проекту. Удаление чата и изменение фото чата находится в выпадающем меню сверху справа.
+В этом спринте я написал тесты для компонента, роутера, стора и httpTransport. Есть такое ощущение что тестов мало. Какие еще тест-кейсы я не проработал?
+Добавил пре-коммит используя husky.
+У меня падает гит-тест на
+Check pre-commit hook installed2/9 ✗ Check pre-commit hook installed
+(from function `fatal' in file /tmp/tests-middle-frontend/tests/utils/utils.bash, line 3,
+    in test file /tmp/tests-middle-frontend/tests/node_build.bats, line 19)
+     `[["$output" =~ (pre-commit$)]] || fatal "$output" # Check pre-commit hook' failed
+Избавиться от нее не получается. У одногрупников такая же проблема
 
-Надо доделать - отправка файлов и стикеров в чат, поиск чата, архивацию чатов, рейтинг пользователей, Oauth, ping-pong webSocket.
+## Будущие доработки
+
+Отправка файлов и стикеров в чат, поиск чата, архивацию чатов, рейтинг пользователей, Oauth, ping-pong webSocket.
 
 ## Страницы
 

@@ -15,83 +15,81 @@ const headerChat = new HeaderChat();
 export const currentChat = new CurrentChat();
 
 const form = new Form({
-    fields: [
-        AttachFileDropdown,
-        new Unit({
-            content: new Unit(
-                {
-                    attrs: {
-                        name: "message",
-                        placeholder: "Сообщение",
-                    },
-                    events: {
-                        input: (e) => {
-                            const target = e.target as HTMLElement;
-                            target.style.height = "5px";
-                            target.style.height = target.scrollHeight + "px";
-                        },
-                    },
-                },
-                "textarea"
-            ),
-            attrs: {
-                class: "type-text",
+  fields: [
+    AttachFileDropdown,
+    new Unit({
+      content: new Unit(
+        {
+          attrs: {
+            name: "message",
+            placeholder: "Сообщение",
+          },
+          events: {
+            input: (e) => {
+              const target = e.target as HTMLElement;
+              target.style.height = "5px";
+              target.style.height = target.scrollHeight + "px";
             },
-        }),
-    ],
-    button: new Button({
-        text: "",
-        attrs: { class: "submit" },
+          },
+        },
+        "textarea",
+      ),
+      attrs: {
+        class: "type-text",
+      },
     }),
-    attrs: {
-        class: "footer",
+  ],
+  button: new Button({
+    text: "",
+    attrs: { class: "submit" },
+  }),
+  attrs: {
+    class: "footer",
+  },
+  events: {
+    submit: (e: SubmitEvent) => {
+      e.preventDefault();
+      const message = (
+        new FormData(e?.target as HTMLFormElement).get("message") as string
+      )?.trim();
+
+      if (message) {
+        chatWS.sendMessage(message);
+      }
+
+      (e.target as HTMLFormElement).reset();
     },
-    events: {
-        submit: (e: SubmitEvent) => {
-            e.preventDefault();
-            const message = (
-                new FormData(e?.target as HTMLFormElement).get(
-                    "message"
-                ) as string
-            )?.trim();
+    keydown: function (e: KeyboardEvent) {
+      if (e.shiftKey && e.key === "Enter") {
+        e.stopPropagation();
+      } else if (e.key === "Enter") {
+        const formData = new FormData(this as HTMLFormElement);
 
-            if (message) {
-                chatWS.sendMessage(message);
-            }
+        const message = formData.get("message");
 
-            (e.target as HTMLFormElement).reset();
-        },
-        keydown: function (e: KeyboardEvent) {
-            if (e.shiftKey && e.key === "Enter") {
-                e.stopPropagation();
-            } else if (e.key === "Enter") {
-                const formData = new FormData(this as HTMLFormElement);
+        if (message) {
+          chatWS.sendMessage(message as string);
+        }
 
-                const message = formData.get("message");
+        (this as HTMLFormElement).reset();
 
-                if (message) {
-                    chatWS.sendMessage(message as string);
-                }
-
-                (this as HTMLFormElement).reset();
-
-                e.stopPropagation();
-            }
-        },
+        e.stopPropagation();
+      }
     },
+  },
 });
 
 const emptyChat = new Unit(
-    {
-        content: "Выберите чат чтобы отправить сообщение",
-        attrs: { class: "empty" },
-    },
-    "h3"
+  {
+    content: "Выберите чат чтобы отправить сообщение",
+    attrs: { class: "empty" },
+  },
+  "h3",
 );
 
 const Page = Connect(IndexPage, (state) => {
-    return {
-        chat: state.currentChat ? [headerChat, currentChat, form] : emptyChat,
-    };
+  return {
+    chat: state.currentChat ? [headerChat, currentChat, form] : emptyChat,
+  };
 });
 export default Page;

@@ -1,2 +1,6 @@
-<input type="file" name="{{name}}" accept="{{accept}}" {{#if isRequired}}required{{/if}}>
+{{#if isRequired}}
+  <input type="file" name="{{name}}" accept="{{accept}}" required />
+{{else}}
+  <input type="file" name="{{name}}" accept="{{accept}}" />
+{{/if}}
 {{#if text}}<span class="label link">{{{text}}}</span>{{/if}}

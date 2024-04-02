@@ -4,28 +4,49 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "21.1.0"
+    "node": ">=18"
   },
   "scripts": {
     "start": "npm run build && node server.js",
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "vite build",
-    "preview": "vite preview"
+    "test": "node --trace-deprecation --import ./mochaImports.js ./node_modules/mocha/bin/mocha",
+    "preview": "vite preview",
+    "lint": "npx lint-staged",
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.14",
+    "@types/jsdom": "^21.1.6",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.28",
+    "@types/sinon": "^17.0.3",
+    "@types/sinon-chai": "^3.2.12",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
+    "chai": "^4.4.1",
     "eslint": "^8.57.0",
+    "esmock": "^2.6.4",
+    "husky": "^9.0.11",
+    "jsdom": "^24.0.0",
+    "lint-staged": "^15.2.2",
+    "mocha": "^10.3.0",
+    "node-esm-loader": "^0.3.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.5",
     "sass": "^1.71.1",
+    "sinon": "^17.0.1",
+    "sinon-chai": "^3.7.0",
     "stylelint": "^16.2.1",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^5.1.0"
   },
   "dependencies": {
-    "@types/uuid": "^9.0.8",
     "express": "^4.18.2",
     "uuid": "^9.0.1",
     "vite-express": "^0.15.0",

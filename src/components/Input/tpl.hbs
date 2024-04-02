@@ -1,3 +1,11 @@
-<input type="{{type}}" value="{{value}}" name="{{name}}" {{#if isRequired}}required{{/if}}>
+{{#if isRequired}}<input
+    type="{{type}}"
+    value="{{value}}"
+    name="{{name}}"
+    required
+  />
+{{else}}
+  <input type="{{type}}" value="{{value}}" name="{{name}}" />
+{{/if}}
 {{#if text}}<span class="label">{{text}}</span>{{/if}}
 {{{error}}}

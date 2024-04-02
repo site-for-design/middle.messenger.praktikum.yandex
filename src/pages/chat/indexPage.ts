@@ -13,51 +13,51 @@ import "./styles.scss";
 const chatList = new ChatList();
 
 class Chat extends Block {
-    constructor() {
-        super(
-            {
-                accountBtn: [
-                    new Unit({
-                        content: "Создать чат",
-                        attrs: {
-                            class: "profile",
-                        },
-                        events: {
-                            click: () => {
-                                ModalCreateChat.show();
-                            },
-                        },
-                    }),
-                    new Unit({
-                        content: "Профиль",
-                        attrs: {
-                            class: "profile",
-                        },
-                        events: {
-                            click: () => {
-                                router.go("/settings");
-                            },
-                        },
-                    }),
-                ],
-                chatList: chatList,
-                modals: [
-                    ModalAddUser,
-                    ModalRemoveUser,
-                    ModalCreateChat,
-                    ModalChangeAvatar,
-                    ModalRemoveChat,
-                ],
-                attrs: {
-                    id: "chat",
-                },
+  constructor() {
+    super(
+      {
+        accountBtn: [
+          new Unit({
+            content: "Создать чат",
+            attrs: {
+              class: "profile",
             },
-            "section"
-        );
-    }
-    render() {
-        return this.compile(tpl, this.props);
-    }
+            events: {
+              click: () => {
+                ModalCreateChat.show();
+              },
+            },
+          }),
+          new Unit({
+            content: "Профиль",
+            attrs: {
+              class: "profile",
+            },
+            events: {
+              click: () => {
+                router.go("/settings");
+              },
+            },
+          }),
+        ],
+        chatList: chatList,
+        modals: [
+          ModalAddUser,
+          ModalRemoveUser,
+          ModalCreateChat,
+          ModalChangeAvatar,
+          ModalRemoveChat,
+        ],
+        attrs: {
+          id: "chat",
+        },
+      },
+      "section",
+    );
+  }
+  render() {
+    return this.compile(tpl, this.props);
+  }
 }
 
 export default Chat;
