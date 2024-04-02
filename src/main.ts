@@ -7,7 +7,6 @@ import "./assets/scss/styles.scss";
 import router from "./services/Router/Router";
 import { getUserInfo } from "./api/auth";
 import { store, setCurrentUser } from "./services/Store";
-import HTTPTransport from "./utils/HTTPTransport";
 
 store;
 
@@ -52,16 +51,4 @@ getUserInfo()
     if (router._currentRoute?._pathname !== "/sign-up") {
       router.go("/");
     }
-  });
-const http = new HTTPTransport();
-
-const file = new FormData();
-file.append("file", new Blob());
-
-http
-  .post("", {
-    data: { file: file },
-  })
-  .then((res) => {
-    console.log(res);
   });

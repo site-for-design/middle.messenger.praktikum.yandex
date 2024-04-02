@@ -315,6 +315,12 @@ section#chat {
         padding: 30px;
         overflow-y: auto;
 
+        > div {
+          display: flex;
+          flex-direction: column;
+          margin-top: auto;
+        }
+
         .day {
           width: 100%;
           display: flex;

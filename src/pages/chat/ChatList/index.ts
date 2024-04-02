@@ -15,8 +15,16 @@ import { getChatUsers, getChats } from "../../../api/chats";
 import { currentChat as currentChatInstance } from "../";
 
 const MESSAGES_OFFSET = 20;
-
 const chatWS = new ChatWS();
+
+chatWS.onMessage = () => {
+  setCurrentChatMessages(chatWS.messages);
+
+  if (chatWS.messages.length <= MESSAGES_OFFSET) {
+    currentChatInstance._element.scrollTop =
+      currentChatInstance._element.scrollHeight;
+  }
+};
 
 const connectChatWS = async () => {
   const user = store.getStateEl("user");
@@ -25,7 +33,7 @@ const connectChatWS = async () => {
     new URLSearchParams(window.location.search).get("chatId"),
   );
 
-  let currentChatId = store.getStateEl("currentChat")?.id;
+  const currentChatId = store.getStateEl("currentChat")?.id;
 
   if (!!currentChatId && !!currentChatIdUrl) {
     try {
@@ -45,39 +53,15 @@ const connectChatWS = async () => {
 
         if (currentChat) {
           setCurrentChat(currentChat);
-          currentChatId = currentChat.id;
+          // currentChatId = currentChat.id;
         }
 
-        const currentChatUsers = await getChatUsers(currentChatId);
-        setCurrentChatUsers(currentChatUsers);
+        if (currentChat?.id) {
+          await chatWS.connect(user.id, currentChat.id);
 
-        await chatWS.connect(user.id, currentChatId);
-        chatWS.socket.addEventListener(
-          "message",
-          (e: MessageEvent<unknown>) => {
-            try {
-              if (e.data !== "WS token is not valid") {
-                const data = JSON.parse(String(e.data));
-
-                chatWS.messages = Array.isArray(data)
-                  ? [...data.reverse(), ...chatWS.messages]
-                  : [...chatWS.messages, data];
-
-                setCurrentChatMessages(chatWS.messages);
-
-                if (chatWS.messages.length <= MESSAGES_OFFSET) {
-                  currentChatInstance._element.scrollTop =
-                    currentChatInstance._element.scrollHeight;
-                }
-              } else {
-                console.error(e.data);
-              }
-            } catch (e) {
-              console.error(e);
-              currentChat;
-            }
-          },
-        );
+          const currentChatUsers = await getChatUsers(currentChat.id);
+          setCurrentChatUsers(currentChatUsers);
+        }
       } else {
         console.error(currentChatId);
       }
